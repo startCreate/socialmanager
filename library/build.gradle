@@ -29,7 +29,7 @@ android {
 }
 
 android.buildTypes.debug.manifestPlaceholders = [
-        facebookAppId        : "296647434172888",
+        facebookAppId        : "350727695353170",
         googleWebClientId    : "775503623453-sqk59kuvr2f8qkb9fkcnhef5uvn9riu4.apps.googleusercontent.com",
 //        twitterConsumerKey   : "r59jTevJfWg6YDGldRGiks8Rl",
         twitterConsumerSecret: "MQAQtngew0imjGduM3mEbWE1fdUbGOekYEcvm0ybCoJy5FUrju",
@@ -39,9 +39,8 @@ android.buildTypes.debug.manifestPlaceholders = [
 ]
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.google.android.gms:play-services-auth:11.0.2'
-
 }

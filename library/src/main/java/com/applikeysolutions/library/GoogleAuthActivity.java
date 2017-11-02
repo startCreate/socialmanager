@@ -49,17 +49,21 @@ public class GoogleAuthActivity extends SimpleAuthActivity
  //   String clientId = AppUtils.getMetaDataValue(this, getString(R.string.sa_com_jaychang_sa_googleWebClientId));
 
     GoogleSignInOptions.Builder gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestId()
-      .requestProfile()
-      .requestEmail()
-      .requestIdToken(/*clientId*/"324431876271-pej04l8dtvaugv9dae9q169c5n6atjvd.apps.googleusercontent.com");
+   //   .requestId()
+     // .requestProfile()
+      .requestEmail();
+     // .requestIdToken(/*clientId*/"324431876271-pej04l8dtvaugv9dae9q169c5n6atjvd.apps.googleusercontent.com");
 
     setupScopes(gsoBuilder);
+
+    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build();
 
     googleApiClient = new GoogleApiClient.Builder(this)
       .enableAutoManage(this, this)
       .addConnectionCallbacks(this)
-      .addApi(Auth.GOOGLE_SIGN_IN_API, gsoBuilder.build())
+      .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
       .build();
   }
 

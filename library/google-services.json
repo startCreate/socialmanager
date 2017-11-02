@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "982271205945",
+    "project_id": "socialmanager-bbdf7"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982271205945:android:e841af0e01dd1b96",
+        "android_client_info": {
+          "package_name": "com.applikeysolutions.library"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982271205945-jem0uia96j6ss0d41l14cohrkvrg3oag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.applikeysolutions.library",
+            "certificate_hash": "eb84785e36cf67852f3f206d80ce22fb4b652ff4"
+          }
+        },
+        {
+          "client_id": "982271205945-q255utl29niqepeg2t02ltgprurpr3q6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ4ZsWm5XnRhU_8fYC9_rwgSXc4wagXyw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
