@@ -26,7 +26,7 @@ android {
 
 android.defaultConfig.manifestPlaceholders = [
         facebookAppId        : "350727695353170",
-        googleWebClientId    : "775503623453-sqk59kuvr2f8qkb9fkcnhef5uvn9riu4.apps.googleusercontent.com",
+        googleWebClientId    : "324431876271-pej04l8dtvaugv9dae9q169c5n6atjvd.apps.googleusercontent.com",
         twitterConsumerKey   : "r59jTevJfWg6YDGldRGiks8Rl",
         twitterConsumerSecret: "MQAQtngew0imjGduM3mEbWE1fdUbGOekYEcvm0ybCoJy5FUrju",
         instagramClientId    : "76bedc2d27dd4e52841e576d4ce8cc79",

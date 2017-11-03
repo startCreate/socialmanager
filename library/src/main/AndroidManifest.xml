@@ -7,13 +7,13 @@
 
         <meta-data
             android:name="@string/facebookAppId"
-            android:value="${facebookAppId}\0" />
-
-       <!-- <meta-data
-            android:name="@string/sa_com.jaychang.sa.googleWebClientId"
-            android:value="${googleWebClientId}\0" />
+            android:value="${facebookAppId}\" />
 
         <meta-data
+            android:name="@string/sa_com.jaychang.sa.googleWebClientId"
+            android:value="${googleWebClientId}\" />
+
+       <!-- <meta-data
             android:name="@string/sa_com.jaychang.sa.twitterConsumerKey"
             android:value="${twitterConsumerKey}\0" />
 

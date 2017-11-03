@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -56,7 +55,7 @@ public class SimpleAuth {
   private void initFacebook(Context appContext) {
     String fbAppId = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.facebookAppId));
     if (!StringUtils.isEmpty(fbAppId)) {
-        Log.e("test", "initFacebook: " + fbAppId );
+ //       Log.e("test", "initFacebook: " + fbAppId );
       FacebookSdk.setApplicationId(fbAppId);
       FacebookSdk.sdkInitialize(appContext);
       FacebookSdk.setWebDialogTheme(android.R.style.Theme_Holo_Light_NoActionBar);

@@ -46,13 +46,13 @@ public class GoogleAuthActivity extends SimpleAuthActivity
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
- //   String clientId = AppUtils.getMetaDataValue(this, getString(R.string.sa_com_jaychang_sa_googleWebClientId));
+    String clientId = AppUtils.getMetaDataValue(this, getString(R.string.sa_com_jaychang_sa_googleWebClientId));
 
     GoogleSignInOptions.Builder gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestId()
       .requestProfile()
       .requestEmail()
-      .requestIdToken(/*clientId*/"324431876271-pej04l8dtvaugv9dae9q169c5n6atjvd.apps.googleusercontent.com");
+      .requestIdToken("324431876271-pej04l8dtvaugv9dae9q169c5n6atjvd.apps.googleusercontent.com");
 
     setupScopes(gsoBuilder);
 
