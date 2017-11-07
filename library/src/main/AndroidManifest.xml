@@ -2,18 +2,19 @@
     package="com.applikeysolutions.library" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
 
         <meta-data
-            android:name="@string/facebookAppId"
+            android:name="@string/vv_com.applikeysolutions.socialmanager.facebookAppId"
             android:value="${facebookAppId}\" />
 
-       <!-- <meta-data
-            android:name="@string/sa_com.jaychang.sa.googleWebClientId"
-            android:value="${googleWebClientId}\0" />
-
         <meta-data
+            android:name="@string/vv_com.applikeysolutions.library.googleWebClientId"
+            android:value="${googleWebClientId}\" />
+
+       <!-- <meta-data
             android:name="@string/sa_com.jaychang.sa.twitterConsumerKey"
             android:value="${twitterConsumerKey}\0" />
 

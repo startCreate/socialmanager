@@ -54,12 +54,12 @@ public class SimpleAuth {
   }
 
   private void initFacebook(Context appContext) {
-    String fbAppId = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.facebookAppId));
+    String fbAppId = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_socialmanager_facebookAppId));
     if (!StringUtils.isEmpty(fbAppId)) {
         Log.e("test", "initFacebook: " + fbAppId );
       FacebookSdk.setApplicationId(fbAppId);
       FacebookSdk.sdkInitialize(appContext);
-      FacebookSdk.setWebDialogTheme(android.R.style.Theme_Holo_Light_NoActionBar);
+   //   FacebookSdk.setWebDialogTheme();
     }
   }
 

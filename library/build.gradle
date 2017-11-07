@@ -1,18 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
-
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 26
+        minSdkVersion 15
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -22,25 +20,21 @@ android {
         }
     }
 
-    lintOptions{
-        abortOnError false
-    }
-
+    resourcePrefix 'vv_'
 }
 
-android.buildTypes.debug.manifestPlaceholders = [
+android.defaultConfig.manifestPlaceholders = [
         facebookAppId        : "350727695353170",
-        googleWebClientId    : "775503623453-sqk59kuvr2f8qkb9fkcnhef5uvn9riu4.apps.googleusercontent.com",
-//        twitterConsumerKey   : "r59jTevJfWg6YDGldRGiks8Rl",
-        twitterConsumerSecret: "MQAQtngew0imjGduM3mEbWE1fdUbGOekYEcvm0ybCoJy5FUrju",
-        instagramClientId    : "76bedc2d27dd4e52841e576d4ce8cc79",
-        instagramClientSecret: "28d91eb23ab440beb55b3a3f112f4bb2",
-        instagramRedirectUri : "https://localhost/oauth2redirect"
-]
+        googleWebClientId    : "973441309503-3j97ol05r9gk60d8duvd0u6ojfdsec9h.apps.googleusercontent.com"]
+
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
-    compile 'com.google.android.gms:play-services-auth:11.0.2'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.27.0'
+    compile 'com.google.android.gms:play-services-auth:10.2.4'
+    compile 'io.reactivex:rxjava:1.2.2'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.firebase:firebase-core:10.2.4'
 }
