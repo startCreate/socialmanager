@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-  /*@OnClick(R.id.connectTwitterButton)
+  @OnClick(R.id.connectTwitterButton)
   void connectTwitter() {
     SimpleAuth.getInstance().connectTwitter(new AuthCallback() {
       @Override
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-  @OnClick(R.id.connectIgButton)
+/*  @OnClick(R.id.connectIgButton)
   void connectInstagram() {
     List<String> scopes = Arrays.asList("follower_list", "likes");
 

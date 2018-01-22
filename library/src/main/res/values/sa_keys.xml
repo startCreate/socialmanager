@@ -10,4 +10,6 @@
 
     <string name="vv_com.applikeysolutions.socialmanager.facebookAppId">com.facebook.sdk.ApplicationId</string>
     <string name="vv_com.applikeysolutions.library.googleWebClientId">com.applikeysolutions.library.googleWebClientId</string>
+    <string name="vv_com.applikeysolutions.library.twitterConsumerKey">com.applikeysolutions.library.twitterConsumerKey</string>
+    <string name="vv_com.applikeysolutions.library.twitterConsumerSecret">com.applikeysolutions.library.twitterConsumerSecret</string>
 </resources>

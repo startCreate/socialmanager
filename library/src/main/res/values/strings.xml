@@ -2,4 +2,6 @@
     <string name="vv_app_name">library</string>
     <string name="vv_facebookAppId">com.facebook.sdk.ApplicationId</string>
     <string name="vv_googleWebClientId">com.applikeysolutions.googleWebClientId</string>
+    <string name="vv_twitterConsumerKey">com.applikeysolution.twitterConsumerKey</string>
+    <string name="vv_twitterConsumerSecret">com.applikeysolution.twitterConsumerSecret</string>
 </resources>

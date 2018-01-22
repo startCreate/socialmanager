@@ -24,7 +24,10 @@ android {
 
 android.defaultConfig.manifestPlaceholders = [
         facebookAppId        : "350727695353170",
-        googleWebClientId    : "973441309503-pgqgph35vi87mpr8lakr1qcfe7j45ujm.apps.googleusercontent.com"]
+        googleWebClientId    : "973441309503-pgqgph35vi87mpr8lakr1qcfe7j45ujm.apps.googleusercontent.com",
+        twitterConsumerKey   : "hqa38UAsloyBx5eLQqSXv23Vm",
+        twitterConsumerSecret: "XcJdjW06LEU3QvrmXvVtqNDBJ9FhAsE0nm5E4nGIK2KxaDBLm9"
+]
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

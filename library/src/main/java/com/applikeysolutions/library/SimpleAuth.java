@@ -15,6 +15,10 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +54,7 @@ public class SimpleAuth {
     Context appContext = context.getApplicationContext();
     getInstance().appContext = appContext;
     getInstance().initFacebook(appContext);
-    //getInstance().initTwitter(appContext);
+    getInstance().initTwitter(appContext);
   }
 
   private void initFacebook(Context appContext) {
@@ -63,9 +67,9 @@ public class SimpleAuth {
     }
   }
 
- /* private void initTwitter(Context appContext) {
-    String consumerKey = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.sa_com_jaychang_sa_twitterConsumerKey));
-    String consumerSecret = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.sa_com_jaychang_sa_twitterConsumerSecret));
+  private void initTwitter(Context appContext) {
+    String consumerKey = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerKey));
+    String consumerSecret = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerSecret));
 
     if (consumerKey != null && consumerSecret != null) {
       TwitterConfig twitterConfig = new TwitterConfig.Builder(appContext)
@@ -74,7 +78,6 @@ public class SimpleAuth {
       Twitter.initialize(twitterConfig);
     }
   }
-*/
   public void connectFacebook(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
     facebookAuthData = new AuthData(scopes, listener);
     FacebookAuthActivity.start(appContext);
@@ -126,16 +129,16 @@ public class SimpleAuth {
     setGoogleRevokeRequested(true);
   }
 
-  /*public void connectTwitter(@NonNull AuthCallback listener) {
-    twitterAuthData = new AuthData(Collections.emptyList(), listener);
+  public void connectTwitter(@NonNull AuthCallback listener) {
+    twitterAuthData = new AuthData(Collections.<String>emptyList(), listener);
     TwitterAuthActivity.start(appContext);
-  }*/
+  }
 
-  /*public void disconnectTwitter() {
+  public void disconnectTwitter() {
     twitterAuthData = null;
     TwitterCore.getInstance().getSessionManager().clearActiveSession();
     clearCookies();
-  }*/
+  }
 
  /* public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
     instagramAuthData = new AuthData(scopes, listener);

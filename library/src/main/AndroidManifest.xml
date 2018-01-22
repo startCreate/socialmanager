@@ -14,15 +14,15 @@
             android:name="@string/vv_com.applikeysolutions.library.googleWebClientId"
             android:value="${googleWebClientId}\" />
 
-       <!-- <meta-data
-            android:name="@string/sa_com.jaychang.sa.twitterConsumerKey"
+        <meta-data
+            android:name="@string/vv_com.applikeysolutions.library.twitterConsumerKey"
             android:value="${twitterConsumerKey}\0" />
 
         <meta-data
-            android:name="@string/sa_com.jaychang.sa.twitterConsumerSecret"
+            android:name="@string/vv_com.applikeysolutions.library.twitterConsumerSecret"
             android:value="${twitterConsumerSecret}\0" />
 
-        <meta-data
+      <!--  <meta-data
             android:name="@string/sa_com.jaychang.sa.instagramClientId"
             android:value="${instagramClientId}\0" />
 
@@ -52,14 +52,14 @@
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
-        <!-- <activity
+         <activity
              android:name=".TwitterAuthActivity"
              android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
              android:excludeFromRecents="true"
              android:launchMode="singleTask"
              android:theme="@style/Theme.AppCompat.Dialog" />
 
-         <activity
+        <!-- <activity
              android:name=".InstagramAuthActivity"
              android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
              android:excludeFromRecents="true"
