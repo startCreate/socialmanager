@@ -122,19 +122,23 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
 
     new OkHttpClient().newCall(request).enqueue(new Callback() {
       @Override
-      public void onFailure(Call call, IOException e) {
-        runOnUiThread(() -> {
-          loadingDialog.dismiss();
-          handleError(e);
+      public void onFailure(Call call, final IOException e) {
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            loadingDialog.dismiss();
+            handleError(e);
+          }
         });
       }
 
       @Override
       public void onResponse(Call call, Response response) throws IOException {
         if (!response.isSuccessful()) {
-          runOnUiThread(() -> {
-            loadingDialog.dismiss();
-            handleError(new Throwable("Failed to get access token."));
+          runOnUiThread(new Runnable() {
+            @Override public void run() {
+              loadingDialog.dismiss();
+              handleError(new Throwable("Failed to get access token."));
+            }
           });
           return;
         }
@@ -151,9 +155,11 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
         user.pageLink = String.format(PAGE_LINK, user.username);
         user.profilePictureUrl = igUser.user.profilePicture;
 
-        runOnUiThread(() -> {
-          loadingDialog.dismiss();
-          handleSuccess(user);
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            loadingDialog.dismiss();
+            handleSuccess(user);
+          }
         });
       }
     });
