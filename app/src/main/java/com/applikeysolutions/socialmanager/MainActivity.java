@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-/*  @OnClick(R.id.connectIgButton)
+  @OnClick(R.id.connectIgButton)
   void connectInstagram() {
     List<String> scopes = Arrays.asList("follower_list", "likes");
 
@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
       }
     });
   }
-*/
   private void toast(String msg) {
     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
   }

@@ -1,16 +1,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'me.tatarka.retrolambda'
 
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
 
     buildTypes {
@@ -20,6 +21,11 @@ android {
         }
     }
 
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
     resourcePrefix 'vv_'
 }
 
@@ -27,7 +33,10 @@ android.defaultConfig.manifestPlaceholders = [
         facebookAppId        : "350727695353170",
         googleWebClientId    : "973441309503-3j97ol05r9gk60d8duvd0u6ojfdsec9h.apps.googleusercontent.com",
         twitterConsumerKey   : "hqa38UAsloyBx5eLQqSXv23Vm",
-        twitterConsumerSecret: "XcJdjW06LEU3QvrmXvVtqNDBJ9FhAsE0nm5E4nGIK2KxaDBLm9"
+        twitterConsumerSecret: "XcJdjW06LEU3QvrmXvVtqNDBJ9FhAsE0nm5E4nGIK2KxaDBLm9",
+        instagramClientId    : "0bed00cd259d4f43b95dba4cd8772ee1",
+        instagramClientSecret: "ce3efb44eee5466a8b5b0abca4ebc582",
+        instagramRedirectUri : "https://localhost/oauth2redirect"
 ]
 
 
@@ -36,8 +45,6 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.facebook.android:facebook-android-sdk:4.7.0'
     implementation 'com.google.android.gms:play-services-auth:10.2.4'
-    implementation 'io.reactivex:rxjava:1.2.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.5.0'
     implementation 'com.google.code.gson:gson:2.4'
     compile 'com.google.firebase:firebase-core:10.2.4'
     implementation 'com.twitter.sdk.android:twitter-core:3.0.0'

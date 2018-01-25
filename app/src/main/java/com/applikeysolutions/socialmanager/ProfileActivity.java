@@ -60,9 +60,9 @@ public class ProfileActivity extends AppCompatActivity {
       SimpleAuth.getInstance().disconnectGoogle();
     } else if (MainActivity.TWITTER.equals(type)) {
       SimpleAuth.getInstance().disconnectTwitter();
-    }/* else if (MainActivity.INSTAGRAM.equals(type)) {
+    } else if (MainActivity.INSTAGRAM.equals(type)) {
       SimpleAuth.getInstance().disconnectInstagram();
-    }*/
+    }
     finish();
   }
 

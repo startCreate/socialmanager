@@ -16,23 +16,23 @@
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.twitterConsumerKey"
-            android:value="${twitterConsumerKey}\0" />
+            android:value="${twitterConsumerKey}\" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.twitterConsumerSecret"
-            android:value="${twitterConsumerSecret}\0" />
-
-      <!--  <meta-data
-            android:name="@string/sa_com.jaychang.sa.instagramClientId"
-            android:value="${instagramClientId}\0" />
+            android:value="${twitterConsumerSecret}\" />
 
         <meta-data
-            android:name="@string/sa_com.jaychang.sa.instagramClientSecret"
+            android:name="@string/vv_com.applikeysolutions.library.instagramClientId"
+            android:value="${instagramClientId}\" />
+
+        <meta-data
+            android:name="@string/vv_com.applikeysolutions.library.instagramClientSecret"
             android:value="${instagramClientSecret}\0" />
 
         <meta-data
-            android:name="@string/sa_com.jaychang.sa.instagramRedirectUri"
-            android:value="${instagramRedirectUri}\0" />-->
+            android:name="@string/vv_com.applikeysolutions.library.instagramRedirectUri"
+            android:value="${instagramRedirectUri}\0" />
 
         <activity
             android:name=".FacebookAuthActivity"
@@ -59,11 +59,11 @@
              android:launchMode="singleTask"
              android:theme="@style/Theme.AppCompat.Dialog" />
 
-        <!-- <activity
+         <activity
              android:name=".InstagramAuthActivity"
              android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
              android:excludeFromRecents="true"
-             android:launchMode="singleTask" />-->
+             android:launchMode="singleTask" />
 
         <provider
             android:authorities="${applicationId}.SimpleAuthInitProvider"

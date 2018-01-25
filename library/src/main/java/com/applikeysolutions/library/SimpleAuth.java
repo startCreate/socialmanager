@@ -140,14 +140,14 @@ public class SimpleAuth {
     clearCookies();
   }
 
- /* public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
+  public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
     instagramAuthData = new AuthData(scopes, listener);
     InstagramAuthActivity.start(appContext);
-  }*/
+  }
 
-  /*public void connectInstagram(@NonNull AuthCallback listener) {
-    connectInstagram(Collections.emptyList(), listener);
-  }*/
+  public void connectInstagram(@NonNull AuthCallback listener) {
+    connectInstagram(Collections.<String>emptyList(), listener);
+  }
 
   public void disconnectInstagram() {
     instagramAuthData = null;
