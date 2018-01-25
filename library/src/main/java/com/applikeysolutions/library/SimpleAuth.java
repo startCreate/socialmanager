@@ -23,6 +23,8 @@ import com.twitter.sdk.android.core.TwitterCore;
 import java.util.Collections;
 import java.util.List;
 
+import static com.twitter.sdk.android.core.TwitterConfig.*;
+
 public class SimpleAuth {
 
   private static final String KEY_IS_GOOGLE_DISCONNECT_REQUESTED = SimpleAuth.class.getName() + "KEY_IS_GOOGLE_DISCONNECT_REQUESTED";
@@ -72,7 +74,7 @@ public class SimpleAuth {
     String consumerSecret = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerSecret));
 
     if (consumerKey != null && consumerSecret != null) {
-      TwitterConfig twitterConfig = new TwitterConfig.Builder(appContext)
+      TwitterConfig twitterConfig = new Builder(appContext)
         .twitterAuthConfig(new TwitterAuthConfig(consumerKey, consumerSecret))
         .build();
       Twitter.initialize(twitterConfig);
