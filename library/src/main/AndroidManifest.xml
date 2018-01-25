@@ -65,10 +65,10 @@
              android:excludeFromRecents="true"
              android:launchMode="singleTask" />
 
-        <provider
+       <!-- <provider
             android:authorities="${applicationId}.SimpleAuthInitProvider"
             android:name=".SimpleAuthInitProvider"
-            android:exported="false" />
+            android:exported="false" />-->
 
     </application>
 
