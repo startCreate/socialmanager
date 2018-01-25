@@ -20,7 +20,7 @@ android {
     }
 
 
-    resourcePrefix 'sa_'
+    resourcePrefix 'vv_'
 }
 
 android.buildTypes.debug.manifestPlaceholders = [
