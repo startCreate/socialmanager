@@ -54,7 +54,7 @@ public class SimpleAuth {
     Context appContext = context.getApplicationContext();
     getInstance().appContext = appContext;
     getInstance().initFacebook(appContext);
-    //getInstance().initTwitter(appContext);
+    getInstance().initTwitter(appContext);
   }
 
   private void initFacebook(Context appContext) {
