@@ -1,14 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
     }
@@ -21,10 +20,10 @@ android {
     }
 
 
-    resourcePrefix 'vv_'
+    resourcePrefix 'sa_'
 }
 
-android.defaultConfig.manifestPlaceholders = [
+android.buildTypes.debug.manifestPlaceholders = [
         facebookAppId        : "350727695353170",
         googleWebClientId    : "973441309503-3j97ol05r9gk60d8duvd0u6ojfdsec9h.apps.googleusercontent.com",
         twitterConsumerKey   : "hqa38UAsloyBx5eLQqSXv23Vm",
@@ -34,18 +33,14 @@ android.defaultConfig.manifestPlaceholders = [
         instagramRedirectUri : "https://localhost/oauth2redirect"
 ]
 
-
-
-    dependencies {
-        compile fileTree(dir: 'libs', include: ['*.jar'])
-        implementation 'com.android.support:appcompat-v7:25.3.1'
-        implementation 'com.facebook.android:facebook-android-sdk:4.7.0'
-        implementation 'com.google.android.gms:play-services-auth:10.2.4'
-        implementation 'io.reactivex:rxjava:1.2.2'
-        implementation 'com.squareup.okhttp3:okhttp:3.5.0'
-        implementation 'com.google.code.gson:gson:2.4'
-        compile 'com.google.firebase:firebase-core:10.2.4'
-        implementation 'com.twitter.sdk.android:twitter-core:3.0.0'
-    }
-
-
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    implementation 'com.google.android.gms:play-services-auth:10.2.4'
+    implementation 'io.reactivex:rxjava:1.2.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.5.0'
+    implementation 'com.google.code.gson:gson:2.4'
+    compile 'com.google.firebase:firebase-core:10.2.4'
+    implementation 'com.twitter.sdk.android:twitter-core:3.0.0'
+}
