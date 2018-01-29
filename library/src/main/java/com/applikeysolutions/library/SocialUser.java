@@ -5,13 +5,13 @@ import android.os.Parcelable;
 
 public class SocialUser implements Parcelable {
 
-  private final String userId;
-  private final String accessToken;
-  private final String profilePictureUrl;
-  private final String username;
-  private final String fullName;
-  private final String email;
-  private final String pageLink;
+  private  String userId;
+  private  String accessToken;
+  private  String profilePictureUrl;
+  private  String username;
+  private  String fullName;
+  private  String email;
+  private  String pageLink;
 
   public String getUserId() {
     return userId;
@@ -41,6 +41,33 @@ public class SocialUser implements Parcelable {
     return pageLink;
   }
 
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
+  }
+
+  public void setProfilePictureUrl(String profilePictureUrl) {
+    this.profilePictureUrl = profilePictureUrl;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public void setPageLink(String pageLink) {
+    this.pageLink = pageLink;
+  }
 /*  public SocialUser() {
   }*/
 

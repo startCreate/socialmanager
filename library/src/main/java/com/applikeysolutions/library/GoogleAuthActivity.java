@@ -155,7 +155,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
 
       getAccessToken(acct, new AccessTokenListener() {
         @Override public void onTokenReady(String accessToken) {
-          user.newBuilder().accessToken(accessToken).build();
+          user.setAccessToken(accessToken);
           GoogleAuthActivity.this.handleSuccess(user);
         }
       });
