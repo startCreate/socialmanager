@@ -8,31 +8,31 @@
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.socialmanager.facebookAppId"
-            android:value="${facebookAppId}\" />
+            android:value="\ ${facebookAppId}" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.googleWebClientId"
-            android:value="${googleWebClientId}\" />
+            android:value="\ ${googleWebClientId}"  />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.twitterConsumerKey"
-            android:value="${twitterConsumerKey}\" />
+            android:value="\ ${twitterConsumerKey}" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.twitterConsumerSecret"
-            android:value="${twitterConsumerSecret}\" />
+            android:value="\ ${twitterConsumerSecret}" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.instagramClientId"
-            android:value="${instagramClientId}\" />
+            android:value="\ ${instagramClientId}" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.instagramClientSecret"
-            android:value="${instagramClientSecret}\0" />
+            android:value="\ ${instagramClientSecret}" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.instagramRedirectUri"
-            android:value="${instagramRedirectUri}\0" />
+            android:value="\ ${instagramRedirectUri}" />
 
         <activity
             android:name=".FacebookAuthActivity"
