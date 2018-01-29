@@ -45,11 +45,11 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    clientId = AppUtils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientId));
-    clientSecret = AppUtils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientSecret));
-    redirectUri = AppUtils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramRedirectUri));
+    clientId = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientId));
+    clientSecret = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientSecret));
+    redirectUri = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramRedirectUri));
 
-    loadingDialog = DialogUtils.createLoadingDialog(this);
+    loadingDialog = Utils.createLoadingDialog(this);
 
     String scopes = TextUtils.join("+", getAuthData().getScopes());
 
@@ -147,13 +147,22 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
 
         IgUser igUser = new Gson().fromJson(body, IgUser.class);
 
-        final SocialUser user = new SocialUser();
+        /*final SocialUser user = new SocialUser();
         user.accessToken = igUser.accessToken;
         user.userId = igUser.user.id;
         user.username = igUser.user.username;
         user.fullName = igUser.user.fullName;
         user.pageLink = String.format(PAGE_LINK, user.username);
-        user.profilePictureUrl = igUser.user.profilePicture;
+        user.profilePictureUrl = igUser.user.profilePicture;*/
+
+        final SocialUser user = SocialUser.newBuilder()
+                .accessToken(igUser.accessToken)
+                .userId(igUser.user.id)
+                .username(igUser.user.username)
+                .fullName(igUser.user.fullName)
+                .pageLink(String.format(PAGE_LINK, igUser.user.username))
+                .profilePictureUrl(igUser.user.profilePicture)
+                .build();
 
         runOnUiThread(new Runnable() {
           @Override public void run() {

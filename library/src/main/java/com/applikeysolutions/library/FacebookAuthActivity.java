@@ -41,11 +41,11 @@ public class FacebookAuthActivity extends SimpleAuthActivity
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    loadingDialog = DialogUtils.createLoadingDialog(this);
+    loadingDialog = Utils.createLoadingDialog(this);
 
     callbackManager = CallbackManager.Factory.create();
 
-    if (DeviceUtils.isFacebookInstalled(this)) {
+    if (Utils.isFacebookInstalled(this)) {
       LoginManager.getInstance().logOut();
     }
 
@@ -103,13 +103,23 @@ public class FacebookAuthActivity extends SimpleAuthActivity
   @Override
   public void onCompleted(JSONObject object, GraphResponse response) {
     try {
-      SocialUser user = new SocialUser();
+      /*SocialUser user = new SocialUser();
       user.userId = object.getString("id");
       user.accessToken = AccessToken.getCurrentAccessToken().getToken();
       user.profilePictureUrl = String.format(PROFILE_PIC_URL, user.userId);
       user.email = object.getString("email");
       user.fullName = object.getString("name");
-      user.pageLink = object.getString("link");
+      user.pageLink = object.getString("link");*/
+
+      SocialUser user = SocialUser.newBuilder()
+              .userId(object.getString("id"))
+              .accessToken(AccessToken.getCurrentAccessToken().getToken())
+              .profilePictureUrl(String.format(PROFILE_PIC_URL, object.getString("id")))
+              .email(object.getString("email"))
+              .fullName(object.getString("name"))
+              .pageLink(object.getString("link"))
+              .build();
+
       loadingDialog.dismiss();
       handleSuccess(user);
     } catch (JSONException e) {

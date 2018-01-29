@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onSuccess(SocialUser socialUser) {
         ProfileActivity.start(MainActivity.this, FACEBOOK, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.fullName + " " + socialUser.email  );
+        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
       }
 
       @Override
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onSuccess(SocialUser socialUser) {
         ProfileActivity.start(MainActivity.this, GOOGLE, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.fullName + " " + socialUser.email  );
+        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
       }
 
       @Override
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onSuccess(SocialUser socialUser) {
         ProfileActivity.start(MainActivity.this, TWITTER, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.fullName + " " + socialUser.email  );
+        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
       }
 
       @Override
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onSuccess(SocialUser socialUser) {
         ProfileActivity.start(MainActivity.this, INSTAGRAM, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.fullName + " " + socialUser.email  );
+        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
       }
 
       @Override

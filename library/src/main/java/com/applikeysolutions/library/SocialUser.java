@@ -5,18 +5,46 @@ import android.os.Parcelable;
 
 public class SocialUser implements Parcelable {
 
-  public String userId;
-  public String accessToken;
-  public String profilePictureUrl;
-  public String username;
-  public String fullName;
-  public String email;
-  public String pageLink;
+  private final String userId;
+  private final String accessToken;
+  private final String profilePictureUrl;
+  private final String username;
+  private final String fullName;
+  private final String email;
+  private final String pageLink;
 
-  public SocialUser() {
+  public String getUserId() {
+    return userId;
   }
 
-  public SocialUser(SocialUser other) {
+  public String getAccessToken() {
+    return accessToken;
+  }
+
+  public String getProfilePictureUrl() {
+    return profilePictureUrl;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getFullName() {
+    return fullName;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public String getPageLink() {
+    return pageLink;
+  }
+
+/*  public SocialUser() {
+  }*/
+
+/*  public SocialUser(SocialUser other) {
     this.userId = other.userId;
     this.accessToken = other.accessToken;
     this.profilePictureUrl = other.profilePictureUrl;
@@ -24,6 +52,20 @@ public class SocialUser implements Parcelable {
     this.fullName = other.fullName;
     this.email = other.email;
     this.pageLink = other.pageLink;
+  }*/
+
+  private SocialUser(Builder builder) {
+    userId = builder.userId;
+    accessToken = builder.accessToken;
+    profilePictureUrl = builder.profilePictureUrl;
+    username = builder.username;
+    fullName = builder.fullName;
+    email = builder.email;
+    pageLink = builder.pageLink;
+  }
+
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   @Override
@@ -81,7 +123,7 @@ public class SocialUser implements Parcelable {
     this.pageLink = in.readString();
   }
 
-  public static final Parcelable.Creator<SocialUser> CREATOR = new Parcelable.Creator<SocialUser>() {
+  public static final Creator<SocialUser> CREATOR = new Creator<SocialUser>() {
     @Override
     public SocialUser createFromParcel(Parcel source) {
       return new SocialUser(source);
@@ -92,5 +134,58 @@ public class SocialUser implements Parcelable {
       return new SocialUser[size];
     }
   };
+
+  public static final class Builder {
+    private String userId;
+    private String accessToken;
+    private String profilePictureUrl;
+    private String username;
+    private String fullName;
+    private String email;
+    private String pageLink;
+
+    private Builder() {
+    }
+
+    public Builder userId(String userId) {
+      this.userId = userId;
+      return this;
+    }
+
+    public Builder accessToken(String accessToken) {
+      this.accessToken = accessToken;
+      return this;
+    }
+
+    public Builder profilePictureUrl(String profilePictureUrl) {
+      this.profilePictureUrl = profilePictureUrl;
+      return this;
+    }
+
+    public Builder username(String username) {
+      this.username = username;
+      return this;
+    }
+
+    public Builder fullName(String fullName) {
+      this.fullName = fullName;
+      return this;
+    }
+
+    public Builder email(String email) {
+      this.email = email;
+      return this;
+    }
+
+    public Builder pageLink(String pageLink) {
+      this.pageLink = pageLink;
+      return this;
+    }
+
+    public SocialUser build() {
+      return new SocialUser(this);
+    }
+  }
+
 
 }

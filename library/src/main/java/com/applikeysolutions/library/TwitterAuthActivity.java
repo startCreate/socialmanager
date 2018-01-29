@@ -70,7 +70,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
     }
 
     private void handleSuccess(final TwitterSession session) {
-        final ProgressDialog loadingDialog = DialogUtils.createLoadingDialog(this);
+        final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
         loadingDialog.show();
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
@@ -80,7 +80,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
             @Override
             public void success(Result<User> userResult) {
                 loadingDialog.dismiss();
-
+/*
                 SocialUser user = new SocialUser();
                 User data = userResult.data;
                 user.userId = String.valueOf(data.getId());
@@ -89,7 +89,16 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
                 user.email = data.email != null ? data.email : "";
                 user.fullName = data.name;
                 user.username = data.screenName;
-                user.pageLink = String.format(PAGE_LINK, data.screenName);
+                user.pageLink = String.format(PAGE_LINK, data.screenName);*/
+                User data = userResult.data;
+SocialUser user = SocialUser.newBuilder().userId(String.valueOf(data.getId()))
+        .accessToken(session.getAuthToken().token)
+        .profilePictureUrl(String.format(PROFILE_PIC_URL, data.screenName))
+        .email(data.email != null ? data.email : "")
+        .fullName(data.name)
+        .username(data.screenName)
+        .pageLink(String.format(PAGE_LINK, data.screenName))
+        .build();
 
                 handleSuccess(user);
             }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -60,8 +61,8 @@ public class SimpleAuth {
   }
 
   private void initFacebook(Context appContext) {
-    String fbAppId = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_socialmanager_facebookAppId));
-    if (!StringUtils.isEmpty(fbAppId)) {
+    String fbAppId = Utils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_socialmanager_facebookAppId));
+    if (!TextUtils.isEmpty(fbAppId)) {
         Log.e("test", "initFacebook: " + fbAppId );
       FacebookSdk.setApplicationId(fbAppId);
       FacebookSdk.sdkInitialize(appContext);
@@ -70,8 +71,8 @@ public class SimpleAuth {
   }
 
   private void initTwitter(Context appContext) {
-    String consumerKey = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerKey));
-    String consumerSecret = AppUtils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerSecret));
+    String consumerKey = Utils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerKey));
+    String consumerSecret = Utils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_library_twitterConsumerSecret));
 
     if (consumerKey != null && consumerSecret != null) {
       TwitterConfig twitterConfig = new Builder(appContext)

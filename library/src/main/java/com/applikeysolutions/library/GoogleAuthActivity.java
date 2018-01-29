@@ -47,7 +47,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    String clientId = AppUtils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_googleWebClientId));
+    String clientId = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_googleWebClientId));
 
     GoogleSignInOptions.Builder gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestId()
@@ -139,16 +139,23 @@ public class GoogleAuthActivity extends SimpleAuthActivity
 
     if (result.isSuccess() && result.getSignInAccount() != null) {
       final GoogleSignInAccount acct = result.getSignInAccount();
-      final SocialUser user = new SocialUser();
+      /*final SocialUser user = new SocialUser();
       user.userId = acct.getId();
       user.accessToken = acct.getIdToken();
       user.profilePictureUrl = acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "";
       user.email = acct.getEmail();
-      user.fullName = acct.getDisplayName();
+      user.fullName = acct.getDisplayName();*/
+      final SocialUser user = SocialUser.newBuilder()
+              .userId(acct.getId())
+              .accessToken(acct.getIdToken())
+              .profilePictureUrl(acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "")
+              .email(acct.getEmail())
+              .fullName(acct.getDisplayName())
+              .build();
 
       getAccessToken(acct, new AccessTokenListener() {
         @Override public void onTokenReady(String accessToken) {
-          user.accessToken = accessToken;
+          user.newBuilder().accessToken(accessToken).build();
           GoogleAuthActivity.this.handleSuccess(user);
         }
       });
@@ -164,7 +171,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
   }
 
   private void getAccessToken(final GoogleSignInAccount account, final AccessTokenListener listener) {
-    final ProgressDialog loadingDialog = DialogUtils.createLoadingDialog(this);
+    final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
     loadingDialog.show();
 
     AsyncTask.execute(new Runnable() {
