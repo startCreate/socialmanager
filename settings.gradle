@@ -1,1 +1,1 @@
-include ':app', ':socialmanager'
+include ':app', ':library'
