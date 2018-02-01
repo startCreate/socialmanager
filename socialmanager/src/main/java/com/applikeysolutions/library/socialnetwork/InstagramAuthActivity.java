@@ -1,6 +1,5 @@
-package com.applikeysolutions.library;
+package com.applikeysolutions.library.socialnetwork;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +10,12 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.applikeysolutions.library.Authentication;
+import com.applikeysolutions.library.AuthenticationActivity;
+import com.applikeysolutions.library.AuthenticationData;
+import com.applikeysolutions.library.NetworklUser;
+import com.applikeysolutions.library.R;
+import com.applikeysolutions.library.Utils;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -24,7 +29,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class InstagramAuthActivity extends SimpleAuthActivity {
+public class InstagramAuthActivity extends AuthenticationActivity {
 
     private static final String AUTH_URL = "https://api.instagram.com/oauth/authorize/?client_id=%1$s&redirect_uri=%2$s&response_type=code&scope=%3$s";
     private static final String TOKEN_URL = "https://api.instagram.com/oauth/access_token";
@@ -33,7 +38,6 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
     private String clientId;
     private String clientSecret;
     private String redirectUri;
-    private ProgressDialog loadingDialog;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, InstagramAuthActivity.class);
@@ -41,17 +45,17 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
         context.startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override public void onBackPressed() {
+        handCancel();
+    }
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         clientId = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientId));
         clientSecret = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientSecret));
         redirectUri = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramRedirectUri));
-
-        loadingDialog = Utils.createLoadingDialog(this);
-
-        String scopes = TextUtils.join("+", getAuthData().getScopes());
+        String scopes = TextUtils.join("+", getAuthenticationData().getScopes());
 
         String url = String.format(AUTH_URL, clientId, redirectUri, scopes);
 
@@ -59,20 +63,17 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient() {
 
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            @Override public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                loadingDialog.show();
+               showDialog();
             }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
+            @Override public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                loadingDialog.dismiss();
+                dialog.dismiss();
             }
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith(redirectUri)) {
                     getCode(Uri.parse(url));
                     return true;
@@ -84,14 +85,8 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
         setContentView(webView);
     }
 
-    @Override
-    protected AuthData getAuthData() {
-        return SimpleAuth.getInstance().getInstagramAuthData();
-    }
-
-    @Override
-    public void onBackPressed() {
-        handCancel();
+    @Override protected AuthenticationData getAuthenticationData() {
+        return Authentication.getInstance().getInstagramAuthData();
     }
 
     private void getCode(Uri uri) {
@@ -117,45 +112,29 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
                 .url(TOKEN_URL)
                 .build();
 
-
-        loadingDialog.show();
+       showDialog();
 
         new OkHttpClient().newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, final IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override public void run() {
-                        loadingDialog.dismiss();
-                        handleError(e);
-                    }
+            @Override public void onFailure(Call call, final IOException e) {
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    handleError(e);
                 });
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            @Override public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    runOnUiThread(new Runnable() {
-                        @Override public void run() {
-                            loadingDialog.dismiss();
-                            handleError(new Throwable("Failed to get access token."));
-                        }
+                    runOnUiThread(() -> {
+                        dialog.dismiss();
+                        handleError(new Throwable("Failed to get access token."));
                     });
                     return;
                 }
 
                 String body = response.body().string();
+                InstagramUser igUser = new Gson().fromJson(body, InstagramUser.class);
 
-                IgUser igUser = new Gson().fromJson(body, IgUser.class);
-
-        /*final SocialUser user = new SocialUser();
-        user.accessToken = igUser.accessToken;
-        user.userId = igUser.user.id;
-        user.username = igUser.user.username;
-        user.fullName = igUser.user.fullName;
-        user.pageLink = String.format(PAGE_LINK, user.username);
-        user.profilePictureUrl = igUser.user.profilePicture;*/
-
-                final SocialUser user = SocialUser.newBuilder()
+                final NetworklUser user = NetworklUser.newBuilder()
                         .accessToken(igUser.accessToken)
                         .userId(igUser.user.id)
                         .username(igUser.user.username)
@@ -164,17 +143,15 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
                         .profilePictureUrl(igUser.user.profilePicture)
                         .build();
 
-                runOnUiThread(new Runnable() {
-                    @Override public void run() {
-                        loadingDialog.dismiss();
-                        handleSuccess(user);
-                    }
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    handleSuccess(user);
                 });
             }
         });
     }
 
-    private static class IgUser {
+    private static class InstagramUser {
         @SerializedName("access_token")
         String accessToken;
         @SerializedName("user")
