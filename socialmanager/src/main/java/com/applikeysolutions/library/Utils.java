@@ -9,13 +9,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-
-import io.reactivex.Single;
-import retrofit2.Call;
-
 public class Utils {
     public Utils() {
     }
@@ -44,20 +37,5 @@ public class Utils {
         return facebook != null;
     }
 
-    public static <T> Single<Object> modifyCall(Call<T> callTweets/*, Resources resources*/) {
-        return Single.create(e -> callTweets
-                .enqueue(new Callback<T>() {
-                    @Override public void success(Result<T> result) {
-                        e.onSuccess(result.data);
-                    }
-
-                    @Override public void failure(TwitterException exception) {
-                        if (!e.isDisposed()) {
-                            e.onError(exception);
-                        }
-                    }
-                }));
-    }
-    //    .onErrorResumeNext(throwable -> Single.error(ExceptionTransformer.transform(resources, throwable)));
 }
 

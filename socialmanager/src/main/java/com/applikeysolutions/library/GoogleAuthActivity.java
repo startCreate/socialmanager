@@ -3,11 +3,11 @@ package com.applikeysolutions.library;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
@@ -22,9 +22,6 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 public class GoogleAuthActivity extends SimpleAuthActivity
         implements GoogleApiClient.OnConnectionFailedListener,
@@ -55,16 +52,10 @@ public class GoogleAuthActivity extends SimpleAuthActivity
                 .requestId()
                 .requestProfile()
                 .requestEmail()
-                // .requestIdToken(clientId)//worked without this
                 ;
-        Log.e("test", "onCreate: " + clientId);
 
         setupScopes(gsoBuilder);
 
-   /* GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build();
-*/
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addConnectionCallbacks(this)
@@ -176,7 +167,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
         final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
         loadingDialog.show();
 
-  /*  AsyncTask.execute(new Runnable() {
+    AsyncTask.execute(new Runnable() {
       @Override public void run() {
         try {
           if (account.getAccount() == null) {
@@ -195,28 +186,8 @@ public class GoogleAuthActivity extends SimpleAuthActivity
           GoogleAuthActivity.this.handleError(e);
         }
       }
-    });*/
-        Observable.fromCallable(() -> {
-                    try {
-                        if (account.getAccount() == null) {
-                            loadingDialog.dismiss();
-                            GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
-                        } else {
-                            loadingDialog.dismiss();
-                            SimpleAuth.getInstance().setGoogleDisconnectRequested(false);
-                            SimpleAuth.getInstance().setGoogleRevokeRequested(false);
-                            String token = GoogleAuthUtil.getToken(GoogleAuthActivity.this.getApplicationContext(), account.getAccount().name, GoogleAuthActivity.this.getAccessTokenScope());
-                            listener.onTokenReady(token);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        loadingDialog.dismiss();
-                        GoogleAuthActivity.this.handleError(e);
-                    }
-                    return false;
-                }
-        ).subscribeOn(Schedulers.io())
-                .subscribe();
+    });
+
     }
 
     private String getAccessTokenScope() {
