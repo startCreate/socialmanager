@@ -17,116 +17,117 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-  public static final String FACEBOOK = "FACEBOOK";
-  public static final String GOOGLE = "GOOGLE";
-  public static final String TWITTER = "TWITTER";
-  public static final String INSTAGRAM = "INSTAGRAM";
-  private static final String TAG = "test";
+    public static final String FACEBOOK = "FACEBOOK";
+    public static final String GOOGLE = "GOOGLE";
+    public static final String TWITTER = "TWITTER";
+    public static final String INSTAGRAM = "INSTAGRAM";
+    private static final String TAG = "test";
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    ButterKnife.bind(this);
-  }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+    }
 
-  @OnClick(R.id.connectFbButton)
-  void connectFacebook() {
-    List<String> scopes = Arrays.asList("user_birthday", "user_friends");
+    @OnClick(R.id.connectFbButton)
+    void connectFacebook() {
+        List<String> scopes = Arrays.asList("user_birthday", "user_friends");
 
-    SimpleAuth.getInstance().connectFacebook(scopes, new AuthCallback() {
-      @Override
-      public void onSuccess(SocialUser socialUser) {
-        ProfileActivity.start(MainActivity.this, FACEBOOK, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
-      }
+        SimpleAuth.getInstance().connectFacebook(scopes, new AuthCallback() {
+            @Override
+            public void onSuccess(SocialUser socialUser) {
+                ProfileActivity.start(MainActivity.this, FACEBOOK, socialUser);
+                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
+            }
 
-      @Override
-      public void onError(Throwable error) {
-        toast(error.getMessage());
-        Log.e(TAG, "onError: " + error.getMessage() );
+            @Override
+            public void onError(Throwable error) {
+                toast(error.getMessage());
+                Log.e(TAG, "onError: " + error.getMessage());
 
-      }
+            }
 
-      @Override
-      public void onCancel() {
-        toast("Canceled");
-      }
-    });
-  }
+            @Override
+            public void onCancel() {
+                toast("Canceled");
+            }
+        });
+    }
 
-  @OnClick(R.id.connectGoogleButton)
-  void connectGoogle() {
-    List<String> scopes = Arrays.asList(
-      "https://www.googleapis.com/auth/youtube",
-      "https://www.googleapis.com/auth/youtube.upload"
-    );
+    @OnClick(R.id.connectGoogleButton)
+    void connectGoogle() {
+        List<String> scopes = Arrays.asList(
+                "https://www.googleapis.com/auth/youtube",
+                "https://www.googleapis.com/auth/youtube.upload"
+        );
 
-    SimpleAuth.getInstance().connectGoogle(scopes, new AuthCallback() {
-      @Override
-      public void onSuccess(SocialUser socialUser) {
-        ProfileActivity.start(MainActivity.this, GOOGLE, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
-      }
+        SimpleAuth.getInstance().connectGoogle(scopes, new AuthCallback() {
+            @Override
+            public void onSuccess(SocialUser socialUser) {
+                ProfileActivity.start(MainActivity.this, GOOGLE, socialUser);
+                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
+            }
 
-      @Override
-      public void onError(Throwable error) {
-        toast(error.getMessage());
-        Log.e(TAG, "onError: " + error.getMessage() );
-      }
+            @Override
+            public void onError(Throwable error) {
+                toast(error.getMessage());
+                Log.e(TAG, "onError: " + error.getMessage());
+            }
 
-      @Override
-      public void onCancel() {
-        toast("Canceled");
-      }
-    });
-  }
+            @Override
+            public void onCancel() {
+                toast("Canceled");
+            }
+        });
+    }
 
-  @OnClick(R.id.connectTwitterButton)
-  void connectTwitter() {
-    SimpleAuth.getInstance().connectTwitter(new AuthCallback() {
-      @Override
-      public void onSuccess(SocialUser socialUser) {
-        ProfileActivity.start(MainActivity.this, TWITTER, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
-      }
+    @OnClick(R.id.connectTwitterButton)
+    void connectTwitter() {
+        SimpleAuth.getInstance().connectTwitter(new AuthCallback() {
+            @Override
+            public void onSuccess(SocialUser socialUser) {
+                ProfileActivity.start(MainActivity.this, TWITTER, socialUser);
+                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
+            }
 
-      @Override
-      public void onError(Throwable error) {
-        toast(error.getMessage());
-      }
+            @Override
+            public void onError(Throwable error) {
+                toast(error.getMessage());
+            }
 
-      @Override
-      public void onCancel() {
-        toast("Canceled");
-      }
-    });
-  }
+            @Override
+            public void onCancel() {
+                toast("Canceled");
+            }
+        });
+    }
 
-  @OnClick(R.id.connectIgButton)
-  void connectInstagram() {
-    List<String> scopes = Arrays.asList("follower_list", "likes");
+    @OnClick(R.id.connectIgButton)
+    void connectInstagram() {
+        List<String> scopes = Arrays.asList("follower_list", "likes");
 
-    SimpleAuth.getInstance().connectInstagram(scopes, new AuthCallback() {
-      @Override
-      public void onSuccess(SocialUser socialUser) {
-        ProfileActivity.start(MainActivity.this, INSTAGRAM, socialUser);
-        Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail()  );
-      }
+        SimpleAuth.getInstance().connectInstagram(scopes, new AuthCallback() {
+            @Override
+            public void onSuccess(SocialUser socialUser) {
+                ProfileActivity.start(MainActivity.this, INSTAGRAM, socialUser);
+                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
+            }
 
-      @Override
-      public void onError(Throwable error) {
-        toast(error.getMessage());
-      }
+            @Override
+            public void onError(Throwable error) {
+                toast(error.getMessage());
+            }
 
-      @Override
-      public void onCancel() {
-        toast("Canceled");
-      }
-    });
-  }
-  private void toast(String msg) {
-    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-  }
+            @Override
+            public void onCancel() {
+                toast("Canceled");
+            }
+        });
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+    }
 
 }

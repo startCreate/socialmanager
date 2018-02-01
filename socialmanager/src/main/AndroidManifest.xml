@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.applikeysolutions.library" >
+    package="com.applikeysolutions.library">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,7 +12,7 @@
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.googleWebClientId"
-            android:value="\${googleWebClientId}"  />
+            android:value="\${googleWebClientId}" />
 
         <meta-data
             android:name="@string/vv_com.applikeysolutions.library.twitterConsumerKey"
@@ -52,18 +52,18 @@
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
-         <activity
-             android:name=".TwitterAuthActivity"
-             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-             android:excludeFromRecents="true"
-             android:launchMode="singleTask"
-             android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".TwitterAuthActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Dialog" />
 
-         <activity
-             android:name=".InstagramAuthActivity"
-             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-             android:excludeFromRecents="true"
-             android:launchMode="singleTask" />
+        <activity
+            android:name=".InstagramAuthActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask" />
 
     </application>
 

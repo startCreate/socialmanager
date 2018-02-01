@@ -59,7 +59,7 @@ public final class PreferenceUtils {
     }
 
     public static Set<String> getStringSet(Context context, String key) {
-        return PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getStringSet(key, (Set)null);
+        return PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getStringSet(key, (Set) null);
     }
 
     public static void remove(Context context, String key) {

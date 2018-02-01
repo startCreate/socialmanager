@@ -75,7 +75,12 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         AccountService accountService = twitterApiClient.getAccountService();
+
         Call<User> call = accountService.verifyCredentials(false, true, true);
+
+       /* Utils.modifyCall(call)
+                .map(response -> (User) response);
+*/
         call.enqueue(new Callback<User>() {
             @Override
             public void success(Result<User> userResult) {
@@ -91,14 +96,14 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
                 user.username = data.screenName;
                 user.pageLink = String.format(PAGE_LINK, data.screenName);*/
                 User data = userResult.data;
-SocialUser user = SocialUser.newBuilder().userId(String.valueOf(data.getId()))
-        .accessToken(session.getAuthToken().token)
-        .profilePictureUrl(String.format(PROFILE_PIC_URL, data.screenName))
-        .email(data.email != null ? data.email : "")
-        .fullName(data.name)
-        .username(data.screenName)
-        .pageLink(String.format(PAGE_LINK, data.screenName))
-        .build();
+                SocialUser user = SocialUser.newBuilder().userId(String.valueOf(data.getId()))
+                        .accessToken(session.getAuthToken().token)
+                        .profilePictureUrl(String.format(PROFILE_PIC_URL, data.screenName))
+                        .email(data.email != null ? data.email : "")
+                        .fullName(data.name)
+                        .username(data.screenName)
+                        .pageLink(String.format(PAGE_LINK, data.screenName))
+                        .build();
 
                 handleSuccess(user);
             }
