@@ -46,7 +46,7 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <activity
-            android:name=".socialnetwork.GoogleAuthActivity"
+            android:name=".GoogleAuthActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"

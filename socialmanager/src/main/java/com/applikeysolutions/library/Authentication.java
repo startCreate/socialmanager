@@ -12,7 +12,6 @@ import android.webkit.CookieSyncManager;
 
 import com.applikeysolutions.library.callback.AuthenticationCallback;
 import com.applikeysolutions.library.socialnetwork.FacebookAuthActivity;
-import com.applikeysolutions.library.socialnetwork.GoogleAuthActivity;
 import com.applikeysolutions.library.socialnetwork.InstagramAuthActivity;
 import com.applikeysolutions.library.socialnetwork.TwitterAuthActivity;
 import com.facebook.FacebookSdk;
