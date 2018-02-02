@@ -46,21 +46,21 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <activity
-            android:name=".GoogleAuthActivity"
+            android:name=".networks.GoogleAuthActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
         <activity
-            android:name=".TwitterAuthActivity"
+            android:name=".networks.TwitterAuthActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
         <activity
-            android:name=".InstagramAuthActivity"
+            android:name=".networks.InstagramAuthActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:excludeFromRecents="true"
             android:launchMode="singleTask" />

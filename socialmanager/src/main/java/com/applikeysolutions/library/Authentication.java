@@ -11,6 +11,9 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.applikeysolutions.library.networks.FacebookAuthActivity;
+import com.applikeysolutions.library.networks.GoogleAuthActivity;
+import com.applikeysolutions.library.networks.InstagramAuthActivity;
+import com.applikeysolutions.library.networks.TwitterAuthActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.twitter.sdk.android.core.Twitter;

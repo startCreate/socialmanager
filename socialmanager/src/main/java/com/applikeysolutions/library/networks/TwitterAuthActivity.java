@@ -1,4 +1,4 @@
-package com.applikeysolutions.library;
+package com.applikeysolutions.library.networks;
 
 
 import android.content.Context;
@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.applikeysolutions.library.Authentication;
+import com.applikeysolutions.library.AuthenticationActivity;
+import com.applikeysolutions.library.AuthenticationData;
+import com.applikeysolutions.library.NetworklUser;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;

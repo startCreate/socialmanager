@@ -1,4 +1,4 @@
-package com.applikeysolutions.library;
+package com.applikeysolutions.library.networks;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,12 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.applikeysolutions.library.Authentication;
+import com.applikeysolutions.library.AuthenticationActivity;
+import com.applikeysolutions.library.AuthenticationData;
+import com.applikeysolutions.library.NetworklUser;
+import com.applikeysolutions.library.R;
+import com.applikeysolutions.library.Utils;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
