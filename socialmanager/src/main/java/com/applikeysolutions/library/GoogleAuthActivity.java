@@ -15,9 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +24,7 @@ public class GoogleAuthActivity extends AuthenticationActivity
         implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
-    private interface AccessTokenListener {
-        void onTokenReady(String accessToken);
-    }
-
     private static final int RC_SIGN_IN = 1000;
-
     private GoogleApiClient googleApiClient;
     private boolean retrySignIn;
 
@@ -41,17 +34,51 @@ public class GoogleAuthActivity extends AuthenticationActivity
         context.startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Override public void onConnected(@Nullable Bundle bundle) {
+        Runnable signIn = () -> {
+            retrySignIn = true;
+            GoogleAuthActivity.this.startSignInFlows();
+        };
+        if (isGoogleDisconnectRequested()) {
+            handleDisconnectRequest(signIn);
+        } else if (isGoogleRevokeRequested()) {
+            handleRevokeRequest(signIn);
+        } else {
+            startSignInFlows();
+        }
+    }
 
-        String clientId = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_googleWebClientId));
+    @Override public void onConnectionSuspended(int i) {
+        handleError(new Throwable("connection suspended."));
+    }
+
+    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Throwable error = new Throwable(connectionResult.getErrorMessage());
+        handleError(error);
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != RC_SIGN_IN || resultCode != RESULT_OK) {
+            return;
+        }
+
+        GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+        if ((!isGoogleDisconnectRequested() && !isGoogleRevokeRequested()) || retrySignIn) {
+            retrySignIn = false;
+            handleSignInResult(signInResult);
+        }
+    }
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         GoogleSignInOptions.Builder gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestId()
                 .requestProfile()
-                .requestEmail()
-                ;
+                .requestEmail();
 
         setupScopes(gsoBuilder);
 
@@ -62,9 +89,92 @@ public class GoogleAuthActivity extends AuthenticationActivity
                 .build();
     }
 
-    @Override
-    protected AuthenticationData getAuthData() {
+    @Override protected AuthenticationData getAuthenticationData() {
         return Authentication.getInstance().getGoogleAuthData();
+    }
+
+    private boolean isGoogleRevokeRequested() {
+        return Authentication.getInstance().isGoogleRevokeRequested();
+    }
+
+    private boolean isGoogleDisconnectRequested() {
+        return Authentication.getInstance().isGoogleDisconnectRequested();
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result == null) {
+            handCancel();
+            return;
+        }
+
+        if (result.isSuccess() && result.getSignInAccount() != null) {
+            final GoogleSignInAccount acct = result.getSignInAccount();
+            final NetworklUser user = NetworklUser.newBuilder()
+                    .userId(acct.getId())
+                    .accessToken(acct.getIdToken())
+                    .profilePictureUrl(acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "")
+                    .email(acct.getEmail())
+                    .fullName(acct.getDisplayName())
+                    .build();
+
+            getAccessToken(acct, accessToken -> {
+                user.setAccessToken(accessToken);
+                GoogleAuthActivity.this.handleSuccess(user);
+            });
+        } else {
+            String errorMsg = result.getStatus().getStatusMessage();
+            if (errorMsg == null) {
+                handCancel();
+            } else {
+                Throwable error = new Throwable(result.getStatus().getStatusMessage());
+                handleError(error);
+            }
+        }
+    }
+
+    private void getAccessToken(final GoogleSignInAccount account, final AccessTokenListener listener) {
+        showDialog();
+
+        AsyncTask.execute(() -> {
+            try {
+                if (account.getAccount() == null) {
+                    dialog.dismiss();
+                    GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
+                } else {
+                    dialog.dismiss();
+                    Authentication.getInstance().setGoogleDisconnectRequested(false);
+                    Authentication.getInstance().setGoogleRevokeRequested(false);
+                    String token = GoogleAuthUtil.getToken(GoogleAuthActivity.this.getApplicationContext(), account.getAccount().name, GoogleAuthActivity.this.getAccessTokenScope());
+                    listener.onTokenReady(token);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                dialog.dismiss();
+                GoogleAuthActivity.this.handleError(e);
+            }
+        });
+    }
+
+    private String getAccessTokenScope() {
+        String scopes = "oauth2:id profile email";
+        if (getAuthenticationData().getScopes().size() > 0) {
+            scopes = "oauth2:" + TextUtils.join(" ", getAuthenticationData().getScopes());
+        }
+        return scopes;
+    }
+
+    private void handleDisconnectRequest(final Runnable onSignOut) {
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(status -> {
+            onSignOut.run();
+            Authentication.getInstance().setGoogleDisconnectRequested(false);
+        });
+    }
+
+    private void handleRevokeRequest(final Runnable onRevoke) {
+        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(status -> {
+            onRevoke.run();
+            Authentication.getInstance().setGoogleRevokeRequested(false);
+        });
     }
 
     private void startSignInFlows() {
@@ -86,157 +196,16 @@ public class GoogleAuthActivity extends AuthenticationActivity
 
     private List<Scope> getScopes() {
         List<Scope> scopes = new ArrayList<>();
-        for (String str : getAuthData().getScopes()) {
+        for (String str : getAuthenticationData().getScopes()) {
             scopes.add(new Scope(str));
         }
 
         return scopes;
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Throwable error = new Throwable(connectionResult.getErrorMessage());
-        handleError(error);
-    }
+    private interface AccessTokenListener {
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode != RC_SIGN_IN || resultCode != RESULT_OK) {
-            return;
-        }
-
-        GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-        if ((!isGoogleDisconnectRequested() && !isGoogleRevokeRequested()) || retrySignIn) {
-            retrySignIn = false;
-            handleSignInResult(signInResult);
-        }
-    }
-
-    private boolean isGoogleRevokeRequested() {
-        return Authentication.getInstance().isGoogleRevokeRequested();
-    }
-
-    private boolean isGoogleDisconnectRequested() {
-        return Authentication.getInstance().isGoogleDisconnectRequested();
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (result == null) {
-            handCancel();
-            return;
-        }
-
-        if (result.isSuccess() && result.getSignInAccount() != null) {
-            final GoogleSignInAccount acct = result.getSignInAccount();
-      /*final NetworklUser user = new NetworklUser();
-      user.userId = acct.getId();
-      user.accessToken = acct.getIdToken();
-      user.profilePictureUrl = acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "";
-      user.email = acct.getEmail();
-      user.fullName = acct.getDisplayName();*/
-            final NetworklUser user = NetworklUser.newBuilder()
-                    .userId(acct.getId())
-                    .accessToken(acct.getIdToken())
-                    .profilePictureUrl(acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "")
-                    .email(acct.getEmail())
-                    .fullName(acct.getDisplayName())
-                    .build();
-
-            getAccessToken(acct, new AccessTokenListener() {
-                @Override public void onTokenReady(String accessToken) {
-                    user.setAccessToken(accessToken);
-                    GoogleAuthActivity.this.handleSuccess(user);
-                }
-            });
-        } else {
-            String errorMsg = result.getStatus().getStatusMessage();
-            if (errorMsg == null) {
-                handCancel();
-            } else {
-                Throwable error = new Throwable(result.getStatus().getStatusMessage());
-                handleError(error);
-            }
-        }
-    }
-
-    private void getAccessToken(final GoogleSignInAccount account, final AccessTokenListener listener) {
-     //   final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
-        showDialog();
-
-    AsyncTask.execute(new Runnable() {
-      @Override public void run() {
-        try {
-          if (account.getAccount() == null) {
-            dialog.dismiss();
-            GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
-          } else {
-            dialog.dismiss();
-            Authentication.getInstance().setGoogleDisconnectRequested(false);
-            Authentication.getInstance().setGoogleRevokeRequested(false);
-            String token = GoogleAuthUtil.getToken(GoogleAuthActivity.this.getApplicationContext(), account.getAccount().name, GoogleAuthActivity.this.getAccessTokenScope());
-            listener.onTokenReady(token);
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-          dialog.dismiss();
-          GoogleAuthActivity.this.handleError(e);
-        }
-      }
-    });
-
-    }
-
-    private String getAccessTokenScope() {
-        String scopes = "oauth2:id profile email";
-        if (getAuthData().getScopes().size() > 0) {
-            scopes = "oauth2:" + TextUtils.join(" ", getAuthData().getScopes());
-        }
-
-        return scopes;
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Runnable signIn = new Runnable() {
-            @Override public void run() {
-                retrySignIn = true;
-                GoogleAuthActivity.this.startSignInFlows();
-            }
-        };
-
-        if (isGoogleDisconnectRequested()) {
-            handleDisconnectRequest(signIn);
-        } else if (isGoogleRevokeRequested()) {
-            handleRevokeRequest(signIn);
-        } else {
-            startSignInFlows();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        handleError(new Throwable("connection suspended."));
-    }
-
-    private void handleDisconnectRequest(final Runnable onSignOut) {
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-            @Override public void onResult(@NonNull Status status) {
-                onSignOut.run();
-                Authentication.getInstance().setGoogleDisconnectRequested(false);
-            }
-        });
-    }
-
-    private void handleRevokeRequest(final Runnable onRevoke) {
-        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-            @Override public void onResult(@NonNull Status status) {
-                onRevoke.run();
-                Authentication.getInstance().setGoogleRevokeRequested(false);
-            }
-        });
+        void onTokenReady(String accessToken);
     }
 
 }

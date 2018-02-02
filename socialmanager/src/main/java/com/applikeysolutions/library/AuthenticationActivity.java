@@ -9,24 +9,24 @@ import android.view.Window;
 abstract class AuthenticationActivity extends AppCompatActivity {
 
     protected ProgressDialog dialog;
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
     }
 
     protected void handCancel() {
-        getAuthData().getCallback().onCancel();
+        getAuthenticationData().getCallback().onCancel();
         finish();
     }
 
     protected void handleError(Throwable error) {
-        getAuthData().getCallback().onError(error);
+        getAuthenticationData().getCallback().onError(error);
         finish();
     }
 
     protected void handleSuccess(NetworklUser user) {
-        getAuthData().getCallback().onSuccess(user);
+        getAuthenticationData().getCallback().onSuccess(user);
         finish();
     }
 
@@ -39,6 +39,6 @@ abstract class AuthenticationActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    protected abstract AuthenticationData getAuthData();
+    protected abstract AuthenticationData getAuthenticationData();
 
 }

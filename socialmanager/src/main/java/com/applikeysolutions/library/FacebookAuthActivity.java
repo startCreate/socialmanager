@@ -28,7 +28,6 @@ public class FacebookAuthActivity extends AuthenticationActivity
     private static final List<String> DEFAULT_SCOPES = Arrays.asList("email", "public_profile");
 
     private CallbackManager callbackManager;
- //   private ProgressDialog loadingDialog;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, FacebookAuthActivity.class);
@@ -36,49 +35,8 @@ public class FacebookAuthActivity extends AuthenticationActivity
         context.startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-   //    loadingDialog = Utils.createLoadingDialog(this);
-
-        callbackManager = CallbackManager.Factory.create();
-
-        if (Utils.isFacebookInstalled(this)) {
-            LoginManager.getInstance().logOut();
-        }
-
-        LoginManager.getInstance().registerCallback(callbackManager, this);
-
-        LoginManager.getInstance().logInWithReadPermissions(this, getScopes());
-    }
-
-    private List<String> getScopes() {
-        List<String> scopes = getAuthData().getScopes();
-        if (scopes.size() <= 0) {
-            scopes = DEFAULT_SCOPES;
-        } else if (!scopes.contains(DEFAULT_SCOPES.get(0))) {
-            scopes.add(DEFAULT_SCOPES.get(0));
-        } else if (!scopes.contains(DEFAULT_SCOPES.get(1))) {
-            scopes.add(DEFAULT_SCOPES.get(1));
-        }
-        return scopes;
-    }
-
-    @Override
-    protected AuthenticationData getAuthData() {
-        return Authentication.getInstance().getFacebookAuthData();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onSuccess(LoginResult loginResult) {
-       showDialog();
+    @Override public void onSuccess(LoginResult loginResult) {
+        showDialog();
         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), this);
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name,email,link");
@@ -86,30 +44,19 @@ public class FacebookAuthActivity extends AuthenticationActivity
         request.executeAsync();
     }
 
-    @Override
-    public void onCancel() {
+    @Override public void onCancel() {
         handCancel();
     }
 
-    @Override
-    public void onError(FacebookException error) {
+    @Override public void onError(FacebookException error) {
         handleError(error);
         if (error instanceof FacebookAuthorizationException) {
             LoginManager.getInstance().logOut();
         }
     }
 
-    @Override
-    public void onCompleted(JSONObject object, GraphResponse response) {
+    @Override public void onCompleted(JSONObject object, GraphResponse response) {
         try {
-      /*NetworklUser user = new NetworklUser();
-      user.userId = object.getString("id");
-      user.accessToken = AccessToken.getCurrentAccessToken().getToken();
-      user.profilePictureUrl = String.format(PROFILE_PIC_URL, user.userId);
-      user.email = object.getString("email");
-      user.fullName = object.getString("name");
-      user.pageLink = object.getString("link");*/
-
             NetworklUser user = NetworklUser.newBuilder()
                     .userId(object.getString("id"))
                     .accessToken(AccessToken.getCurrentAccessToken().getToken())
@@ -125,5 +72,38 @@ public class FacebookAuthActivity extends AuthenticationActivity
             dialog.dismiss();
             handleError(e);
         }
+    }
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        callbackManager = CallbackManager.Factory.create();
+        if (Utils.isFacebookInstalled(this)) {
+            LoginManager.getInstance().logOut();
+        }
+
+        LoginManager.getInstance().registerCallback(callbackManager, this);
+        LoginManager.getInstance().logInWithReadPermissions(this, getScopes());
+    }
+
+    @Override protected AuthenticationData getAuthenticationData() {
+        return Authentication.getInstance().getFacebookAuthData();
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private List<String> getScopes() {
+        List<String> scopes = getAuthenticationData().getScopes();
+        if (scopes.size() <= 0) {
+            scopes = DEFAULT_SCOPES;
+        } else if (!scopes.contains(DEFAULT_SCOPES.get(0))) {
+            scopes.add(DEFAULT_SCOPES.get(0));
+        } else if (!scopes.contains(DEFAULT_SCOPES.get(1))) {
+            scopes.add(DEFAULT_SCOPES.get(1));
+        }
+        return scopes;
     }
 }

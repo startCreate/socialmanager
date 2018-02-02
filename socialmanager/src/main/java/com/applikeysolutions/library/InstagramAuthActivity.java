@@ -32,7 +32,6 @@ public class InstagramAuthActivity extends AuthenticationActivity {
     private String clientId;
     private String clientSecret;
     private String redirectUri;
-  //  private ProgressDialog loadingDialog;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, InstagramAuthActivity.class);
@@ -40,17 +39,17 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         context.startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override public void onBackPressed() {
+        handCancel();
+    }
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         clientId = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientId));
         clientSecret = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientSecret));
         redirectUri = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramRedirectUri));
-
-       // loadingDialog = Utils.createLoadingDialog(this);
-
-        String scopes = TextUtils.join("+", getAuthData().getScopes());
+        String scopes = TextUtils.join("+", getAuthenticationData().getScopes());
 
         String url = String.format(AUTH_URL, clientId, redirectUri, scopes);
 
@@ -58,20 +57,17 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient() {
 
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            @Override public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 showDialog();
             }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
+            @Override public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 dialog.dismiss();
             }
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith(redirectUri)) {
                     getCode(Uri.parse(url));
                     return true;
@@ -83,14 +79,8 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         setContentView(webView);
     }
 
-    @Override
-    protected AuthenticationData getAuthData() {
+    @Override protected AuthenticationData getAuthenticationData() {
         return Authentication.getInstance().getInstagramAuthData();
-    }
-
-    @Override
-    public void onBackPressed() {
-        handCancel();
     }
 
     private void getCode(Uri uri) {
@@ -116,43 +106,27 @@ public class InstagramAuthActivity extends AuthenticationActivity {
                 .url(TOKEN_URL)
                 .build();
 
-
         showDialog();
 
         new OkHttpClient().newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, final IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override public void run() {
-                        dialog.dismiss();
-                        handleError(e);
-                    }
+            @Override public void onFailure(Call call, final IOException e) {
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    handleError(e);
                 });
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            @Override public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    runOnUiThread(new Runnable() {
-                        @Override public void run() {
-                            dialog.dismiss();
-                            handleError(new Throwable("Failed to get access token."));
-                        }
+                    runOnUiThread(() -> {
+                        dialog.dismiss();
+                        handleError(new Throwable("Failed to get access token."));
                     });
                     return;
                 }
 
                 String body = response.body().string();
-
-                IgUser igUser = new Gson().fromJson(body, IgUser.class);
-
-        /*final NetworklUser user = new NetworklUser();
-        user.accessToken = igUser.accessToken;
-        user.userId = igUser.user.id;
-        user.username = igUser.user.username;
-        user.fullName = igUser.user.fullName;
-        user.pageLink = String.format(PAGE_LINK, user.username);
-        user.profilePictureUrl = igUser.user.profilePicture;*/
+                InstagramUser igUser = new Gson().fromJson(body, InstagramUser.class);
 
                 final NetworklUser user = NetworklUser.newBuilder()
                         .accessToken(igUser.accessToken)
@@ -163,17 +137,15 @@ public class InstagramAuthActivity extends AuthenticationActivity {
                         .profilePictureUrl(igUser.user.profilePicture)
                         .build();
 
-                runOnUiThread(new Runnable() {
-                    @Override public void run() {
-                        dialog.dismiss();
-                        handleSuccess(user);
-                    }
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    handleSuccess(user);
                 });
             }
         });
     }
 
-    private static class IgUser {
+    private static class InstagramUser {
         @SerializedName("access_token")
         String accessToken;
         @SerializedName("user")

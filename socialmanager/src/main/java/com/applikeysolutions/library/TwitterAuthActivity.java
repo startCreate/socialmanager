@@ -24,26 +24,13 @@ public class TwitterAuthActivity extends AuthenticationActivity {
     private static final String PAGE_LINK = "https://twitter.com/%1$s";
 
     private TwitterAuthClient twitterAuthClient;
-    private Callback<TwitterSession> callback = new Callback<TwitterSession>() {
-        @Override
-        public void success(Result<TwitterSession> result) {
-            handleSuccess(result.data);
-        }
-
-        @Override
-        public void failure(TwitterException exception) {
-            handleError(exception);
-        }
-    };
-
     public static void start(Context context) {
         Intent intent = new Intent(context, TwitterAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TwitterSession activeSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
@@ -54,8 +41,7 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_CANCELED) {
@@ -68,32 +54,47 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         }
     }
 
+    protected void handleCancel() {
+        getTwitterAuthClient().cancelAuthorize();
+        super.handCancel();
+    }
+
+    private Callback<TwitterSession> callback = new Callback<TwitterSession>() {
+        @Override public void success(Result<TwitterSession> result) {
+            handleSuccess(result.data);
+        }
+
+        @Override public void failure(TwitterException exception) {
+            handleError(exception);
+        }
+    };
+
+    @Override protected AuthenticationData getAuthenticationData() {
+        return Authentication.getInstance().getTwitterAuthData();
+    }
+
+    private TwitterAuthClient getTwitterAuthClient() {
+        if (twitterAuthClient == null) {
+            synchronized (TwitterAuthActivity.class) {
+                if (twitterAuthClient == null) {
+                    twitterAuthClient = new TwitterAuthClient();
+                }
+            }
+        }
+        return twitterAuthClient;
+    }
+
     private void handleSuccess(final TwitterSession session) {
-      //  final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
         showDialog();
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         AccountService accountService = twitterApiClient.getAccountService();
 
         Call<User> call = accountService.verifyCredentials(false, true, true);
-
-       /* Utils.modifyCall(call)
-                .map(response -> (User) response);
-*/
         call.enqueue(new Callback<User>() {
             @Override
             public void success(Result<User> userResult) {
                 dialog.dismiss();
-/*
-                NetworklUser user = new NetworklUser();
-                User data = userResult.data;
-                user.userId = String.valueOf(data.getId());
-                user.accessToken = session.getAuthToken().token;
-                user.profilePictureUrl = String.format(PROFILE_PIC_URL, data.screenName);
-                user.email = data.email != null ? data.email : "";
-                user.fullName = data.name;
-                user.username = data.screenName;
-                user.pageLink = String.format(PAGE_LINK, data.screenName);*/
                 User data = userResult.data;
                 NetworklUser user = NetworklUser.newBuilder().userId(String.valueOf(data.getId()))
                         .accessToken(session.getAuthToken().token)
@@ -112,27 +113,6 @@ public class TwitterAuthActivity extends AuthenticationActivity {
                 handleError(error);
             }
         });
-    }
-
-    protected void handleCancel() {
-        getTwitterAuthClient().cancelAuthorize();
-        super.handCancel();
-    }
-
-    @Override
-    protected AuthenticationData getAuthData() {
-        return Authentication.getInstance().getTwitterAuthData();
-    }
-
-    private TwitterAuthClient getTwitterAuthClient() {
-        if (twitterAuthClient == null) {
-            synchronized (TwitterAuthActivity.class) {
-                if (twitterAuthClient == null) {
-                    twitterAuthClient = new TwitterAuthClient();
-                }
-            }
-        }
-        return twitterAuthClient;
     }
 
 }
