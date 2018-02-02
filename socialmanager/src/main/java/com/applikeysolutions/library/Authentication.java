@@ -26,27 +26,27 @@ import java.util.List;
 
 import static com.twitter.sdk.android.core.TwitterConfig.Builder;
 
-public class SimpleAuth {
+public class Authentication {
 
-    private static final String KEY_IS_GOOGLE_DISCONNECT_REQUESTED = SimpleAuth.class.getName() + "KEY_IS_GOOGLE_DISCONNECT_REQUESTED";
-    private static final String KEY_IS_GOOGLE_REVOKE_REQUESTED = SimpleAuth.class.getName() + "KEY_IS_GOOGLE_REVOKE_REQUESTED";
+    private static final String KEY_IS_GOOGLE_DISCONNECT_REQUESTED = Authentication.class.getName() + "KEY_IS_GOOGLE_DISCONNECT_REQUESTED";
+    private static final String KEY_IS_GOOGLE_REVOKE_REQUESTED = Authentication.class.getName() + "KEY_IS_GOOGLE_REVOKE_REQUESTED";
 
     @SuppressLint("StaticFieldLeak")
-    private static SimpleAuth instance;
+    private static Authentication instance;
     private Context appContext;
     private AuthData facebookAuthData;
     private AuthData googleAuthData;
     private AuthData twitterAuthData;
     private AuthData instagramAuthData;
 
-    private SimpleAuth() {
+    private Authentication() {
     }
 
-    public static SimpleAuth getInstance() {
+    public static Authentication getInstance() {
         if (instance == null) {
-            synchronized (SimpleAuth.class) {
+            synchronized (Authentication.class) {
                 if (instance == null) {
-                    instance = new SimpleAuth();
+                    instance = new Authentication();
                 }
             }
         }
@@ -82,12 +82,12 @@ public class SimpleAuth {
         }
     }
 
-    public void connectFacebook(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
+    public void connectFacebook(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
         facebookAuthData = new AuthData(scopes, listener);
         FacebookAuthActivity.start(appContext);
     }
 
-    public void connectFacebook(@NonNull AuthCallback listener) {
+    public void connectFacebook(@NonNull AuthenticationCallback listener) {
         connectFacebook(Collections.<String>emptyList(), listener);
     }
 
@@ -101,7 +101,7 @@ public class SimpleAuth {
                 "/me/permissions/", null, HttpMethod.DELETE,
                 new GraphRequest.Callback() {
                     @Override public void onCompleted(GraphResponse graphResponse) {
-                        SimpleAuth.this.disconnectFacebook();
+                        Authentication.this.disconnectFacebook();
                         if (callback != null) {
                             callback.onRevoked();
                         }
@@ -114,12 +114,12 @@ public class SimpleAuth {
         revokeFacebook(null);
     }
 
-    public void connectGoogle(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
+    public void connectGoogle(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
         googleAuthData = new AuthData(scopes, listener);
         GoogleAuthActivity.start(appContext);
     }
 
-    public void connectGoogle(@NonNull AuthCallback listener) {
+    public void connectGoogle(@NonNull AuthenticationCallback listener) {
         connectGoogle(Collections.<String>emptyList(), listener);
     }
 
@@ -133,7 +133,7 @@ public class SimpleAuth {
         setGoogleRevokeRequested(true);
     }
 
-    public void connectTwitter(@NonNull AuthCallback listener) {
+    public void connectTwitter(@NonNull AuthenticationCallback listener) {
         twitterAuthData = new AuthData(Collections.<String>emptyList(), listener);
         TwitterAuthActivity.start(appContext);
     }
@@ -144,12 +144,12 @@ public class SimpleAuth {
         clearCookies();
     }
 
-    public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthCallback listener) {
+    public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
         instagramAuthData = new AuthData(scopes, listener);
         InstagramAuthActivity.start(appContext);
     }
 
-    public void connectInstagram(@NonNull AuthCallback listener) {
+    public void connectInstagram(@NonNull AuthenticationCallback listener) {
         connectInstagram(Collections.<String>emptyList(), listener);
     }
 

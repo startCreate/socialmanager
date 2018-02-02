@@ -1,8 +1,8 @@
 package com.applikeysolutions.library;
 
-public interface AuthCallback {
+public interface AuthenticationCallback {
 
-    void onSuccess(SocialUser socialUser);
+    void onSuccess(NetworklUser socialUser);
 
     void onError(Throwable error);
 

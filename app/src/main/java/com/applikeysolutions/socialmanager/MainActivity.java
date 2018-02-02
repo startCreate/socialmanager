@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.applikeysolutions.library.AuthCallback;
-import com.applikeysolutions.library.SimpleAuth;
-import com.applikeysolutions.library.SocialUser;
+import com.applikeysolutions.library.AuthenticationCallback;
+import com.applikeysolutions.library.NetworklUser;
+import com.applikeysolutions.library.Authentication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     void connectFacebook() {
         List<String> scopes = Arrays.asList("user_birthday", "user_friends");
 
-        SimpleAuth.getInstance().connectFacebook(scopes, new AuthCallback() {
+        Authentication.getInstance().connectFacebook(scopes, new AuthenticationCallback() {
             @Override
-            public void onSuccess(SocialUser socialUser) {
+            public void onSuccess(NetworklUser socialUser) {
                 ProfileActivity.start(MainActivity.this, FACEBOOK, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 "https://www.googleapis.com/auth/youtube.upload"
         );
 
-        SimpleAuth.getInstance().connectGoogle(scopes, new AuthCallback() {
+        Authentication.getInstance().connectGoogle(scopes, new AuthenticationCallback() {
             @Override
-            public void onSuccess(SocialUser socialUser) {
+            public void onSuccess(NetworklUser socialUser) {
                 ProfileActivity.start(MainActivity.this, GOOGLE, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
@@ -84,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.connectTwitterButton)
     void connectTwitter() {
-        SimpleAuth.getInstance().connectTwitter(new AuthCallback() {
+        Authentication.getInstance().connectTwitter(new AuthenticationCallback() {
             @Override
-            public void onSuccess(SocialUser socialUser) {
+            public void onSuccess(NetworklUser socialUser) {
                 ProfileActivity.start(MainActivity.this, TWITTER, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
     void connectInstagram() {
         List<String> scopes = Arrays.asList("follower_list", "likes");
 
-        SimpleAuth.getInstance().connectInstagram(scopes, new AuthCallback() {
+        Authentication.getInstance().connectInstagram(scopes, new AuthenticationCallback() {
             @Override
-            public void onSuccess(SocialUser socialUser) {
+            public void onSuccess(NetworklUser socialUser) {
                 ProfileActivity.start(MainActivity.this, INSTAGRAM, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }

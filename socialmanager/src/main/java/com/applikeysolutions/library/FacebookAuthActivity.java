@@ -68,7 +68,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
 
     @Override
     protected AuthData getAuthData() {
-        return SimpleAuth.getInstance().getFacebookAuthData();
+        return Authentication.getInstance().getFacebookAuthData();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
     @Override
     public void onCompleted(JSONObject object, GraphResponse response) {
         try {
-      /*SocialUser user = new SocialUser();
+      /*NetworklUser user = new NetworklUser();
       user.userId = object.getString("id");
       user.accessToken = AccessToken.getCurrentAccessToken().getToken();
       user.profilePictureUrl = String.format(PROFILE_PIC_URL, user.userId);
@@ -111,7 +111,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
       user.fullName = object.getString("name");
       user.pageLink = object.getString("link");*/
 
-            SocialUser user = SocialUser.newBuilder()
+            NetworklUser user = NetworklUser.newBuilder()
                     .userId(object.getString("id"))
                     .accessToken(AccessToken.getCurrentAccessToken().getToken())
                     .profilePictureUrl(String.format(PROFILE_PIC_URL, object.getString("id")))

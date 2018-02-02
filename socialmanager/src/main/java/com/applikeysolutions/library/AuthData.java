@@ -6,9 +6,9 @@ import java.util.List;
 class AuthData {
 
     private List<String> scopes;
-    private AuthCallback callback;
+    private AuthenticationCallback callback;
 
-    AuthData(List<String> scopes, AuthCallback callback) {
+    AuthData(List<String> scopes, AuthenticationCallback callback) {
         this.scopes = new ArrayList<>(scopes);
         this.callback = callback;
     }
@@ -17,7 +17,7 @@ class AuthData {
         return scopes;
     }
 
-    AuthCallback getCallback() {
+    AuthenticationCallback getCallback() {
         return callback;
     }
 

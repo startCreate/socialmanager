@@ -65,7 +65,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
 
     @Override
     protected AuthData getAuthData() {
-        return SimpleAuth.getInstance().getGoogleAuthData();
+        return Authentication.getInstance().getGoogleAuthData();
     }
 
     private void startSignInFlows() {
@@ -117,11 +117,11 @@ public class GoogleAuthActivity extends SimpleAuthActivity
     }
 
     private boolean isGoogleRevokeRequested() {
-        return SimpleAuth.getInstance().isGoogleRevokeRequested();
+        return Authentication.getInstance().isGoogleRevokeRequested();
     }
 
     private boolean isGoogleDisconnectRequested() {
-        return SimpleAuth.getInstance().isGoogleDisconnectRequested();
+        return Authentication.getInstance().isGoogleDisconnectRequested();
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -132,13 +132,13 @@ public class GoogleAuthActivity extends SimpleAuthActivity
 
         if (result.isSuccess() && result.getSignInAccount() != null) {
             final GoogleSignInAccount acct = result.getSignInAccount();
-      /*final SocialUser user = new SocialUser();
+      /*final NetworklUser user = new NetworklUser();
       user.userId = acct.getId();
       user.accessToken = acct.getIdToken();
       user.profilePictureUrl = acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "";
       user.email = acct.getEmail();
       user.fullName = acct.getDisplayName();*/
-            final SocialUser user = SocialUser.newBuilder()
+            final NetworklUser user = NetworklUser.newBuilder()
                     .userId(acct.getId())
                     .accessToken(acct.getIdToken())
                     .profilePictureUrl(acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "")
@@ -175,8 +175,8 @@ public class GoogleAuthActivity extends SimpleAuthActivity
             GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
           } else {
             loadingDialog.dismiss();
-            SimpleAuth.getInstance().setGoogleDisconnectRequested(false);
-            SimpleAuth.getInstance().setGoogleRevokeRequested(false);
+            Authentication.getInstance().setGoogleDisconnectRequested(false);
+            Authentication.getInstance().setGoogleRevokeRequested(false);
             String token = GoogleAuthUtil.getToken(GoogleAuthActivity.this.getApplicationContext(), account.getAccount().name, GoogleAuthActivity.this.getAccessTokenScope());
             listener.onTokenReady(token);
           }
@@ -226,7 +226,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override public void onResult(@NonNull Status status) {
                 onSignOut.run();
-                SimpleAuth.getInstance().setGoogleDisconnectRequested(false);
+                Authentication.getInstance().setGoogleDisconnectRequested(false);
             }
         });
     }
@@ -235,7 +235,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
         Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override public void onResult(@NonNull Status status) {
                 onRevoke.run();
-                SimpleAuth.getInstance().setGoogleRevokeRequested(false);
+                Authentication.getInstance().setGoogleRevokeRequested(false);
             }
         });
     }

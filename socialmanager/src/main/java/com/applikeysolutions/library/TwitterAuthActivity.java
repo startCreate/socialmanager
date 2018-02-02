@@ -86,7 +86,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
             public void success(Result<User> userResult) {
                 loadingDialog.dismiss();
 /*
-                SocialUser user = new SocialUser();
+                NetworklUser user = new NetworklUser();
                 User data = userResult.data;
                 user.userId = String.valueOf(data.getId());
                 user.accessToken = session.getAuthToken().token;
@@ -96,7 +96,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
                 user.username = data.screenName;
                 user.pageLink = String.format(PAGE_LINK, data.screenName);*/
                 User data = userResult.data;
-                SocialUser user = SocialUser.newBuilder().userId(String.valueOf(data.getId()))
+                NetworklUser user = NetworklUser.newBuilder().userId(String.valueOf(data.getId()))
                         .accessToken(session.getAuthToken().token)
                         .profilePictureUrl(String.format(PROFILE_PIC_URL, data.screenName))
                         .email(data.email != null ? data.email : "")
@@ -122,7 +122,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
 
     @Override
     protected AuthData getAuthData() {
-        return SimpleAuth.getInstance().getTwitterAuthData();
+        return Authentication.getInstance().getTwitterAuthData();
     }
 
     private TwitterAuthClient getTwitterAuthClient() {

@@ -3,17 +3,17 @@ package com.applikeysolutions.library;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SocialUser implements Parcelable {
+public class NetworklUser implements Parcelable {
 
-    public static final Creator<SocialUser> CREATOR = new Creator<SocialUser>() {
+    public static final Creator<NetworklUser> CREATOR = new Creator<NetworklUser>() {
         @Override
-        public SocialUser createFromParcel(Parcel source) {
-            return new SocialUser(source);
+        public NetworklUser createFromParcel(Parcel source) {
+            return new NetworklUser(source);
         }
 
         @Override
-        public SocialUser[] newArray(int size) {
-            return new SocialUser[size];
+        public NetworklUser[] newArray(int size) {
+            return new NetworklUser[size];
         }
     };
     private String userId;
@@ -24,7 +24,7 @@ public class SocialUser implements Parcelable {
     private String email;
     private String pageLink;
 
-    private SocialUser(Builder builder) {
+    private NetworklUser(Builder builder) {
         userId = builder.userId;
         accessToken = builder.accessToken;
         profilePictureUrl = builder.profilePictureUrl;
@@ -34,7 +34,7 @@ public class SocialUser implements Parcelable {
         pageLink = builder.pageLink;
     }
 
-    protected SocialUser(Parcel in) {
+    protected NetworklUser(Parcel in) {
         this.userId = in.readString();
         this.accessToken = in.readString();
         this.profilePictureUrl = in.readString();
@@ -87,10 +87,10 @@ public class SocialUser implements Parcelable {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-/*  public SocialUser() {
+/*  public NetworklUser() {
   }*/
 
-/*  public SocialUser(SocialUser other) {
+/*  public NetworklUser(NetworklUser other) {
     this.userId = other.userId;
     this.accessToken = other.accessToken;
     this.profilePictureUrl = other.profilePictureUrl;
@@ -121,7 +121,7 @@ public class SocialUser implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SocialUser that = (SocialUser) o;
+        NetworklUser that = (NetworklUser) o;
 
         return userId != null ? userId.equals(that.userId) : that.userId == null;
     }
@@ -133,7 +133,7 @@ public class SocialUser implements Parcelable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SocialUser {").append("\n\n");
+        final StringBuilder sb = new StringBuilder("NetworklUser {").append("\n\n");
         sb.append("userId=").append(userId).append("\n\n");
         sb.append("username=").append(username).append("\n\n");
         sb.append("fullName=").append(fullName).append("\n\n");
@@ -208,8 +208,8 @@ public class SocialUser implements Parcelable {
             return this;
         }
 
-        public SocialUser build() {
-            return new SocialUser(this);
+        public NetworklUser build() {
+            return new NetworklUser(this);
         }
     }
 

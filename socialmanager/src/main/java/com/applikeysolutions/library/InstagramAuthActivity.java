@@ -86,7 +86,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
 
     @Override
     protected AuthData getAuthData() {
-        return SimpleAuth.getInstance().getInstagramAuthData();
+        return Authentication.getInstance().getInstagramAuthData();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
 
                 IgUser igUser = new Gson().fromJson(body, IgUser.class);
 
-        /*final SocialUser user = new SocialUser();
+        /*final NetworklUser user = new NetworklUser();
         user.accessToken = igUser.accessToken;
         user.userId = igUser.user.id;
         user.username = igUser.user.username;
@@ -155,7 +155,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
         user.pageLink = String.format(PAGE_LINK, user.username);
         user.profilePictureUrl = igUser.user.profilePicture;*/
 
-                final SocialUser user = SocialUser.newBuilder()
+                final NetworklUser user = NetworklUser.newBuilder()
                         .accessToken(igUser.accessToken)
                         .userId(igUser.user.id)
                         .username(igUser.user.username)

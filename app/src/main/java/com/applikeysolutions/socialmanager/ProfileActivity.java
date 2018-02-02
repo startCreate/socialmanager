@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.applikeysolutions.library.SimpleAuth;
-import com.applikeysolutions.library.SocialUser;
+import com.applikeysolutions.library.Authentication;
+import com.applikeysolutions.library.NetworklUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String type;
 
-    public static void start(Context context, String type, SocialUser socialUser) {
+    public static void start(Context context, String type, NetworklUser socialUser) {
         Intent intent = new Intent(context, ProfileActivity.class);
         intent.putExtra(EXTRA_USER, socialUser);
         intent.putExtra(EXTRA_TYPE, type);
@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        SocialUser socialUser = getIntent().getParcelableExtra(EXTRA_USER);
+        NetworklUser socialUser = getIntent().getParcelableExtra(EXTRA_USER);
 
         userView.setText(socialUser.toString());
 
@@ -55,13 +55,13 @@ public class ProfileActivity extends AppCompatActivity {
     @OnClick(R.id.disconnectButton)
     void disconnect() {
         if (MainActivity.FACEBOOK.equals(type)) {
-            SimpleAuth.getInstance().disconnectFacebook();
+            Authentication.getInstance().disconnectFacebook();
         } else if (MainActivity.GOOGLE.equals(type)) {
-            SimpleAuth.getInstance().disconnectGoogle();
+            Authentication.getInstance().disconnectGoogle();
         } else if (MainActivity.TWITTER.equals(type)) {
-            SimpleAuth.getInstance().disconnectTwitter();
+            Authentication.getInstance().disconnectTwitter();
         } else if (MainActivity.INSTAGRAM.equals(type)) {
-            SimpleAuth.getInstance().disconnectInstagram();
+            Authentication.getInstance().disconnectInstagram();
         }
         finish();
     }
@@ -69,9 +69,9 @@ public class ProfileActivity extends AppCompatActivity {
     @OnClick(R.id.revokeButton)
     void revoke() {
         if (MainActivity.FACEBOOK.equals(type)) {
-            SimpleAuth.getInstance().revokeFacebook();
+            Authentication.getInstance().revokeFacebook();
         } else if (MainActivity.GOOGLE.equals(type)) {
-            SimpleAuth.getInstance().revokeGoogle();
+            Authentication.getInstance().revokeGoogle();
         } /*else if (MainActivity.TWITTER.equals(type)) {
       // no-op
     } else if (MainActivity.INSTAGRAM.equals(type)) {

@@ -3,11 +3,11 @@ package com.applikeysolutions.socialmanager;
 
 import android.app.Application;
 
-import com.applikeysolutions.library.SimpleAuth;
+import com.applikeysolutions.library.Authentication;
 
 public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
-        SimpleAuth.init(getBaseContext());
+        Authentication.init(getBaseContext());
     }
 }

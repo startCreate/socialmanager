@@ -23,7 +23,7 @@ abstract class SimpleAuthActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void handleSuccess(SocialUser user) {
+    protected void handleSuccess(NetworklUser user) {
         getAuthData().getCallback().onSuccess(user);
         finish();
     }
