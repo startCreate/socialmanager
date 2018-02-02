@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
 public class Utils {
+
     private Utils() {
     }
 
@@ -38,13 +39,6 @@ public class Utils {
     public static boolean getBoolean(Context context, String key) {
         return PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(key, false);
     }
-
-   /* static ProgressDialog createLoadingDialog(Context context) {
-        ProgressDialog loadingDialog = new ProgressDialog(context, ProgressDialog.THEME_HOLO_LIGHT);
-        loadingDialog.setCancelable(false);
-        loadingDialog.setMessage("Loading");
-        return loadingDialog;
-    }*/
 
 }
 

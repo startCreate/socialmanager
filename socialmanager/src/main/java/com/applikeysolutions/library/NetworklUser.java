@@ -6,20 +6,18 @@ import android.os.Parcelable;
 public class NetworklUser implements Parcelable {
 
     public static final Creator<NetworklUser> CREATOR = new Creator<NetworklUser>() {
-        @Override
-        public NetworklUser createFromParcel(Parcel source) {
+        @Override public NetworklUser createFromParcel(Parcel source) {
             return new NetworklUser(source);
         }
 
-        @Override
-        public NetworklUser[] newArray(int size) {
+        @Override public NetworklUser[] newArray(int size) {
             return new NetworklUser[size];
         }
     };
     private String userId;
     private String accessToken;
     private String profilePictureUrl;
-    private String username;
+    private String userName;
     private String fullName;
     private String email;
     private String pageLink;
@@ -28,7 +26,7 @@ public class NetworklUser implements Parcelable {
         userId = builder.userId;
         accessToken = builder.accessToken;
         profilePictureUrl = builder.profilePictureUrl;
-        username = builder.username;
+        userName = builder.username;
         fullName = builder.fullName;
         email = builder.email;
         pageLink = builder.pageLink;
@@ -38,7 +36,7 @@ public class NetworklUser implements Parcelable {
         this.userId = in.readString();
         this.accessToken = in.readString();
         this.profilePictureUrl = in.readString();
-        this.username = in.readString();
+        this.userName = in.readString();
         this.fullName = in.readString();
         this.email = in.readString();
         this.pageLink = in.readString();
@@ -72,12 +70,12 @@ public class NetworklUser implements Parcelable {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFullName() {
@@ -87,18 +85,6 @@ public class NetworklUser implements Parcelable {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-/*  public NetworklUser() {
-  }*/
-
-/*  public NetworklUser(NetworklUser other) {
-    this.userId = other.userId;
-    this.accessToken = other.accessToken;
-    this.profilePictureUrl = other.profilePictureUrl;
-    this.username = other.username;
-    this.fullName = other.fullName;
-    this.email = other.email;
-    this.pageLink = other.pageLink;
-  }*/
 
     public String getEmail() {
         return email;
@@ -116,8 +102,7 @@ public class NetworklUser implements Parcelable {
         this.pageLink = pageLink;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -126,16 +111,14 @@ public class NetworklUser implements Parcelable {
         return userId != null ? userId.equals(that.userId) : that.userId == null;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return userId != null ? userId.hashCode() : 0;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         final StringBuilder sb = new StringBuilder("NetworklUser {").append("\n\n");
         sb.append("userId=").append(userId).append("\n\n");
-        sb.append("username=").append(username).append("\n\n");
+        sb.append("userName=").append(userName).append("\n\n");
         sb.append("fullName=").append(fullName).append("\n\n");
         sb.append("email=").append(email).append("\n\n");
         sb.append("profilePictureUrl=").append(profilePictureUrl).append("\n\n");
@@ -145,17 +128,15 @@ public class NetworklUser implements Parcelable {
         return sb.toString();
     }
 
-    @Override
-    public int describeContents() {
+    @Override public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.userId);
         dest.writeString(this.accessToken);
         dest.writeString(this.profilePictureUrl);
-        dest.writeString(this.username);
+        dest.writeString(this.userName);
         dest.writeString(this.fullName);
         dest.writeString(this.email);
         dest.writeString(this.pageLink);
@@ -212,6 +193,5 @@ public class NetworklUser implements Parcelable {
             return new NetworklUser(this);
         }
     }
-
 
 }
