@@ -184,18 +184,18 @@ public class Authentication {
     }
 
     boolean isGoogleDisconnectRequested() {
-        return PreferenceUtils.getBoolean(appContext, KEY_IS_GOOGLE_DISCONNECT_REQUESTED);
+        return Utils.getBoolean(appContext, KEY_IS_GOOGLE_DISCONNECT_REQUESTED);
     }
 
     void setGoogleDisconnectRequested(boolean isRequested) {
-        PreferenceUtils.saveBoolean(appContext, KEY_IS_GOOGLE_DISCONNECT_REQUESTED, isRequested);
+        Utils.saveBoolean(appContext, KEY_IS_GOOGLE_DISCONNECT_REQUESTED, isRequested);
     }
 
     boolean isGoogleRevokeRequested() {
-        return PreferenceUtils.getBoolean(appContext, KEY_IS_GOOGLE_REVOKE_REQUESTED);
+        return Utils.getBoolean(appContext, KEY_IS_GOOGLE_REVOKE_REQUESTED);
     }
 
     void setGoogleRevokeRequested(boolean isRequested) {
-        PreferenceUtils.saveBoolean(appContext, KEY_IS_GOOGLE_REVOKE_REQUESTED, isRequested);
+        Utils.saveBoolean(appContext, KEY_IS_GOOGLE_REVOKE_REQUESTED, isRequested);
     }
 }
