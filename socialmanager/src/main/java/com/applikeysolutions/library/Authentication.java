@@ -34,10 +34,10 @@ public class Authentication {
     @SuppressLint("StaticFieldLeak")
     private static Authentication instance;
     private Context appContext;
-    private AuthData facebookAuthData;
-    private AuthData googleAuthData;
-    private AuthData twitterAuthData;
-    private AuthData instagramAuthData;
+    private AuthenticationData facebookAuthData;
+    private AuthenticationData googleAuthData;
+    private AuthenticationData twitterAuthData;
+    private AuthenticationData instagramAuthData;
 
     private Authentication() {
     }
@@ -83,7 +83,7 @@ public class Authentication {
     }
 
     public void connectFacebook(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
-        facebookAuthData = new AuthData(scopes, listener);
+        facebookAuthData = new AuthenticationData(scopes, listener);
         FacebookAuthActivity.start(appContext);
     }
 
@@ -115,7 +115,7 @@ public class Authentication {
     }
 
     public void connectGoogle(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
-        googleAuthData = new AuthData(scopes, listener);
+        googleAuthData = new AuthenticationData(scopes, listener);
         GoogleAuthActivity.start(appContext);
     }
 
@@ -134,7 +134,7 @@ public class Authentication {
     }
 
     public void connectTwitter(@NonNull AuthenticationCallback listener) {
-        twitterAuthData = new AuthData(Collections.<String>emptyList(), listener);
+        twitterAuthData = new AuthenticationData(Collections.<String>emptyList(), listener);
         TwitterAuthActivity.start(appContext);
     }
 
@@ -145,7 +145,7 @@ public class Authentication {
     }
 
     public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
-        instagramAuthData = new AuthData(scopes, listener);
+        instagramAuthData = new AuthenticationData(scopes, listener);
         InstagramAuthActivity.start(appContext);
     }
 
@@ -167,19 +167,19 @@ public class Authentication {
         }
     }
 
-    AuthData getFacebookAuthData() {
+    AuthenticationData getFacebookAuthData() {
         return facebookAuthData;
     }
 
-    AuthData getGoogleAuthData() {
+    AuthenticationData getGoogleAuthData() {
         return googleAuthData;
     }
 
-    AuthData getTwitterAuthData() {
+    AuthenticationData getTwitterAuthData() {
         return twitterAuthData;
     }
 
-    AuthData getInstagramAuthData() {
+    AuthenticationData getInstagramAuthData() {
         return instagramAuthData;
     }
 
