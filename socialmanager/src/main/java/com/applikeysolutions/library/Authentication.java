@@ -10,6 +10,7 @@ import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
+import com.applikeysolutions.library.networks.FacebookAuthActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.twitter.sdk.android.core.Twitter;

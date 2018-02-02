@@ -66,19 +66,19 @@ public class ProfileActivity extends AppCompatActivity {
         finish();
     }
 
-    @OnClick(R.id.revokeButton)
+  /*  @OnClick(R.id.revokeButton)
     void revoke() {
         if (MainActivity.FACEBOOK.equals(type)) {
             Authentication.getInstance().revokeFacebook();
         } else if (MainActivity.GOOGLE.equals(type)) {
             Authentication.getInstance().revokeGoogle();
-        } /*else if (MainActivity.TWITTER.equals(type)) {
+        } *//*else if (MainActivity.TWITTER.equals(type)) {
       // no-op
     } else if (MainActivity.INSTAGRAM.equals(type)) {
       // no-op
-    }*/
+    }*//*
         finish();
-    }
+    }*/
 
     private void handleVisibility() {
         if (MainActivity.TWITTER.equals(type) || MainActivity.INSTAGRAM.equals(type)) {

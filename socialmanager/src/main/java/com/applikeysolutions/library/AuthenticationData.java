@@ -3,7 +3,7 @@ package com.applikeysolutions.library;
 import java.util.ArrayList;
 import java.util.List;
 
-class AuthenticationData {
+public class AuthenticationData {
 
     private List<String> scopes;
     private AuthenticationCallback callback;
@@ -13,11 +13,11 @@ class AuthenticationData {
         this.callback = callback;
     }
 
-    List<String> getScopes() {
+    public List<String> getScopes() {
         return scopes;
     }
 
-    AuthenticationCallback getCallback() {
+    public AuthenticationCallback getCallback() {
         return callback;
     }
 

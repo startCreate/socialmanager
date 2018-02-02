@@ -35,7 +35,7 @@
             android:value="\${instagramRedirectUri}" />
 
         <activity
-            android:name=".FacebookAuthActivity"
+            android:name=".networks.FacebookAuthActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:launchMode="singleTask"
             android:excludeFromRecents="true"

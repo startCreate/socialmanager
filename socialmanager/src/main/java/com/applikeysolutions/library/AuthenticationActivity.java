@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
-abstract class AuthenticationActivity extends AppCompatActivity {
+public abstract class AuthenticationActivity extends AppCompatActivity {
 
     protected ProgressDialog dialog;
 
