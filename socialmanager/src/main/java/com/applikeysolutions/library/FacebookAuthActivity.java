@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.List;
 
-public class FacebookAuthActivity extends SimpleAuthActivity
+public class FacebookAuthActivity extends AuthenticationActivity
         implements FacebookCallback<LoginResult>, GraphRequest.GraphJSONObjectCallback {
 
     private static final String PROFILE_PIC_URL = "https://graph.facebook.com/%1$s/picture?type=large";
@@ -66,7 +66,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
     }
 
     @Override
-    protected AuthData getAuthData() {
+    protected AuthenticationData getAuthData() {
         return Authentication.getInstance().getFacebookAuthData();
     }
 

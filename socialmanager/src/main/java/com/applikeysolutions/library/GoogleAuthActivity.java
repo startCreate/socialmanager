@@ -22,7 +22,7 @@ import com.google.android.gms.common.api.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleAuthActivity extends SimpleAuthActivity
+public class GoogleAuthActivity extends AuthenticationActivity
         implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
@@ -63,7 +63,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
     }
 
     @Override
-    protected AuthData getAuthData() {
+    protected AuthenticationData getAuthData() {
         return Authentication.getInstance().getGoogleAuthData();
     }
 

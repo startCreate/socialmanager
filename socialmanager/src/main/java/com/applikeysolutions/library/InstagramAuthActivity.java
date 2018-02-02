@@ -1,6 +1,5 @@
 package com.applikeysolutions.library;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,7 +23,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class InstagramAuthActivity extends SimpleAuthActivity {
+public class InstagramAuthActivity extends AuthenticationActivity {
 
     private static final String AUTH_URL = "https://api.instagram.com/oauth/authorize/?client_id=%1$s&redirect_uri=%2$s&response_type=code&scope=%3$s";
     private static final String TOKEN_URL = "https://api.instagram.com/oauth/access_token";
@@ -33,7 +32,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
     private String clientId;
     private String clientSecret;
     private String redirectUri;
-    private ProgressDialog loadingDialog;
+  //  private ProgressDialog loadingDialog;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, InstagramAuthActivity.class);
@@ -62,13 +61,13 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                loadingDialog.show();
+                showDialog();
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                loadingDialog.dismiss();
+                dialog.dismiss();
             }
 
             @Override
@@ -85,7 +84,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
     }
 
     @Override
-    protected AuthData getAuthData() {
+    protected AuthenticationData getAuthData() {
         return Authentication.getInstance().getInstagramAuthData();
     }
 
@@ -118,14 +117,14 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
                 .build();
 
 
-        loadingDialog.show();
+        showDialog();
 
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
                 runOnUiThread(new Runnable() {
                     @Override public void run() {
-                        loadingDialog.dismiss();
+                        dialog.dismiss();
                         handleError(e);
                     }
                 });
@@ -136,7 +135,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
                 if (!response.isSuccessful()) {
                     runOnUiThread(new Runnable() {
                         @Override public void run() {
-                            loadingDialog.dismiss();
+                            dialog.dismiss();
                             handleError(new Throwable("Failed to get access token."));
                         }
                     });
@@ -166,7 +165,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
 
                 runOnUiThread(new Runnable() {
                     @Override public void run() {
-                        loadingDialog.dismiss();
+                        dialog.dismiss();
                         handleSuccess(user);
                     }
                 });

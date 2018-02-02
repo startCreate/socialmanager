@@ -3,12 +3,12 @@ package com.applikeysolutions.library;
 import java.util.ArrayList;
 import java.util.List;
 
-class AuthData {
+class AuthenticationData {
 
     private List<String> scopes;
     private AuthenticationCallback callback;
 
-    AuthData(List<String> scopes, AuthenticationCallback callback) {
+    AuthenticationData(List<String> scopes, AuthenticationCallback callback) {
         this.scopes = new ArrayList<>(scopes);
         this.callback = callback;
     }

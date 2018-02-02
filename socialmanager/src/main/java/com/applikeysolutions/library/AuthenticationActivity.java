@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
-abstract class SimpleAuthActivity extends AppCompatActivity {
+abstract class AuthenticationActivity extends AppCompatActivity {
 
     protected ProgressDialog dialog;
     @Override
@@ -39,6 +39,6 @@ abstract class SimpleAuthActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    protected abstract AuthData getAuthData();
+    protected abstract AuthenticationData getAuthData();
 
 }

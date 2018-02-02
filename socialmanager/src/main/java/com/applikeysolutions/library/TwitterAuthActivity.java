@@ -18,7 +18,7 @@ import com.twitter.sdk.android.core.services.AccountService;
 
 import retrofit2.Call;
 
-public class TwitterAuthActivity extends SimpleAuthActivity {
+public class TwitterAuthActivity extends AuthenticationActivity {
 
     private static final String PROFILE_PIC_URL = "https://twitter.com/%1$s/profile_image?size=original";
     private static final String PAGE_LINK = "https://twitter.com/%1$s";
@@ -120,7 +120,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
     }
 
     @Override
-    protected AuthData getAuthData() {
+    protected AuthenticationData getAuthData() {
         return Authentication.getInstance().getTwitterAuthData();
     }
 
