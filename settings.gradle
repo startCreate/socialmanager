@@ -1,1 +1,1 @@
-include ':sample', ':socialmanager'
+include ':sample', ':library'
