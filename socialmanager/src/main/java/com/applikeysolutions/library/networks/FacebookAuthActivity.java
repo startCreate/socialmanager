@@ -70,10 +70,10 @@ public class FacebookAuthActivity extends AuthenticationActivity
                     .pageLink(object.getString("link"))
                     .build();
 
-            dialog.dismiss();
+            dismissProgress();
             handleSuccess(user);
         } catch (JSONException e) {
-            dialog.dismiss();
+            dismissProgress();
             handleError(e);
         }
     }

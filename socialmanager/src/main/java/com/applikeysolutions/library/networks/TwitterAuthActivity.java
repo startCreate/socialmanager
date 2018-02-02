@@ -98,7 +98,7 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void success(Result<User> userResult) {
-                dialog.dismiss();
+                dismissProgress();
                 User data = userResult.data;
                 NetworklUser user = NetworklUser.newBuilder().userId(String.valueOf(data.getId()))
                         .accessToken(session.getAuthToken().token)
@@ -113,7 +113,7 @@ public class TwitterAuthActivity extends AuthenticationActivity {
             }
 
             public void failure(TwitterException error) {
-                dialog.dismiss();
+                dismissProgress();
                 handleError(error);
             }
         });

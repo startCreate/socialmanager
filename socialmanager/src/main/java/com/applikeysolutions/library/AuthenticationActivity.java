@@ -30,13 +30,19 @@ public abstract class AuthenticationActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void showDialog() {
+    protected final void showDialog() {
         if (dialog == null) {
             dialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_LIGHT);
             dialog.setCancelable(false);
             dialog.setMessage("Please wait ....");
         }
         dialog.show();
+    }
+
+    protected final void dismissProgress() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 
     protected abstract AuthenticationData getAuthenticationData();

@@ -70,7 +70,7 @@ public class InstagramAuthActivity extends AuthenticationActivity {
 
             @Override public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                dialog.dismiss();
+                dismissProgress();
             }
 
             @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -117,7 +117,7 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, final IOException e) {
                 runOnUiThread(() -> {
-                    dialog.dismiss();
+                    dismissProgress();
                     handleError(e);
                 });
             }
@@ -125,7 +125,7 @@ public class InstagramAuthActivity extends AuthenticationActivity {
             @Override public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     runOnUiThread(() -> {
-                        dialog.dismiss();
+                        dismissProgress();
                         handleError(new Throwable("Failed to get access token."));
                     });
                     return;
@@ -144,7 +144,7 @@ public class InstagramAuthActivity extends AuthenticationActivity {
                         .build();
 
                 runOnUiThread(() -> {
-                    dialog.dismiss();
+                    dismissProgress();
                     handleSuccess(user);
                 });
             }

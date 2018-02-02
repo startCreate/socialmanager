@@ -139,10 +139,10 @@ public class GoogleAuthActivity extends AuthenticationActivity
         AsyncTask.execute(() -> {
             try {
                 if (account.getAccount() == null) {
-                    dialog.dismiss();
+                    dismissProgress();
                     GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
                 } else {
-                    dialog.dismiss();
+                    dismissProgress();
                     Authentication.getInstance().setGoogleDisconnectRequested(false);
                     Authentication.getInstance().setGoogleRevokeRequested(false);
                     String token = GoogleAuthUtil.getToken(GoogleAuthActivity.this.getApplicationContext(), account.getAccount().name, GoogleAuthActivity.this.getAccessTokenScope());
@@ -150,7 +150,7 @@ public class GoogleAuthActivity extends AuthenticationActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                dialog.dismiss();
+                dismissProgress();
                 GoogleAuthActivity.this.handleError(e);
             }
         });
