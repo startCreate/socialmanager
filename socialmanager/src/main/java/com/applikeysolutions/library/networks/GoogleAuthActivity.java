@@ -67,9 +67,7 @@ public class GoogleAuthActivity extends AuthenticationActivity
         if (requestCode != RC_SIGN_IN || resultCode != RESULT_OK) {
             return;
         }
-
         GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
         if ((!isGoogleDisconnectRequested() && !isGoogleRevokeRequested()) || retrySignIn) {
             retrySignIn = false;
             handleSignInResult(signInResult);
@@ -110,7 +108,6 @@ public class GoogleAuthActivity extends AuthenticationActivity
             handCancel();
             return;
         }
-
         if (result.isSuccess() && result.getSignInAccount() != null) {
             final GoogleSignInAccount acct = result.getSignInAccount();
             final NetworklUser user = NetworklUser.newBuilder()

@@ -23,7 +23,6 @@ public class Utils {
         } catch (PackageManager.NameNotFoundException var4) {
             return null;
         }
-
         return (String) app.metaData.get(name);
     }
 

@@ -31,7 +31,6 @@ public class FacebookAuthActivity extends AuthenticationActivity
 
     private static final String PROFILE_PIC_URL = "https://graph.facebook.com/%1$s/picture?type=large";
     private static final List<String> DEFAULT_SCOPES = Arrays.asList("email", "public_profile");
-
     private CallbackManager callbackManager;
 
     public static void start(Context context) {
