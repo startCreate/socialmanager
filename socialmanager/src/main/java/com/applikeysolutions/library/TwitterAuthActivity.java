@@ -1,7 +1,6 @@
 package com.applikeysolutions.library;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -70,8 +69,8 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
     }
 
     private void handleSuccess(final TwitterSession session) {
-        final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
-        loadingDialog.show();
+      //  final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
+        showDialog();
 
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         AccountService accountService = twitterApiClient.getAccountService();
@@ -84,7 +83,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void success(Result<User> userResult) {
-                loadingDialog.dismiss();
+                dialog.dismiss();
 /*
                 NetworklUser user = new NetworklUser();
                 User data = userResult.data;
@@ -109,7 +108,7 @@ public class TwitterAuthActivity extends SimpleAuthActivity {
             }
 
             public void failure(TwitterException error) {
-                loadingDialog.dismiss();
+                dialog.dismiss();
                 handleError(error);
             }
         });

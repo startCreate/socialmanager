@@ -49,7 +49,7 @@ public class InstagramAuthActivity extends SimpleAuthActivity {
         clientSecret = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientSecret));
         redirectUri = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramRedirectUri));
 
-        loadingDialog = Utils.createLoadingDialog(this);
+       // loadingDialog = Utils.createLoadingDialog(this);
 
         String scopes = TextUtils.join("+", getAuthData().getScopes());
 

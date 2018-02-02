@@ -1,6 +1,5 @@
 package com.applikeysolutions.library;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -164,17 +163,17 @@ public class GoogleAuthActivity extends SimpleAuthActivity
     }
 
     private void getAccessToken(final GoogleSignInAccount account, final AccessTokenListener listener) {
-        final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
-        loadingDialog.show();
+     //   final ProgressDialog loadingDialog = Utils.createLoadingDialog(this);
+        showDialog();
 
     AsyncTask.execute(new Runnable() {
       @Override public void run() {
         try {
           if (account.getAccount() == null) {
-            loadingDialog.dismiss();
+            dialog.dismiss();
             GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
           } else {
-            loadingDialog.dismiss();
+            dialog.dismiss();
             Authentication.getInstance().setGoogleDisconnectRequested(false);
             Authentication.getInstance().setGoogleRevokeRequested(false);
             String token = GoogleAuthUtil.getToken(GoogleAuthActivity.this.getApplicationContext(), account.getAccount().name, GoogleAuthActivity.this.getAccessTokenScope());
@@ -182,7 +181,7 @@ public class GoogleAuthActivity extends SimpleAuthActivity
           }
         } catch (Exception e) {
           e.printStackTrace();
-          loadingDialog.dismiss();
+          dialog.dismiss();
           GoogleAuthActivity.this.handleError(e);
         }
       }

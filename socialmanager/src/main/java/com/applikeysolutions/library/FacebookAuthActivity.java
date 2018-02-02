@@ -1,6 +1,5 @@
 package com.applikeysolutions.library;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +28,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
     private static final List<String> DEFAULT_SCOPES = Arrays.asList("email", "public_profile");
 
     private CallbackManager callbackManager;
-    private ProgressDialog loadingDialog;
+ //   private ProgressDialog loadingDialog;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, FacebookAuthActivity.class);
@@ -41,7 +40,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadingDialog = Utils.createLoadingDialog(this);
+   //    loadingDialog = Utils.createLoadingDialog(this);
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -79,7 +78,7 @@ public class FacebookAuthActivity extends SimpleAuthActivity
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        loadingDialog.show();
+       showDialog();
         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), this);
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name,email,link");
@@ -120,10 +119,10 @@ public class FacebookAuthActivity extends SimpleAuthActivity
                     .pageLink(object.getString("link"))
                     .build();
 
-            loadingDialog.dismiss();
+            dialog.dismiss();
             handleSuccess(user);
         } catch (JSONException e) {
-            loadingDialog.dismiss();
+            dialog.dismiss();
             handleError(e);
         }
     }
