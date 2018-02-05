@@ -2,12 +2,11 @@ package com.applikeysolutions.socialmanager;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.applikeysolutions.library.Authentication;
 import com.applikeysolutions.library.AuthenticationCallback;
 import com.applikeysolutions.library.NetworklUser;
-import com.applikeysolutions.library.Authentication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,19 +37,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, FACEBOOK, socialUser);
-                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
             @Override
             public void onError(Throwable error) {
-                toast(error.getMessage());
-                Log.e(TAG, "onError: " + error.getMessage());
-
+                showToast(error.getMessage());
             }
 
             @Override
             public void onCancel() {
-                toast("Canceled");
+                showToast("Canceled");
             }
         });
     }
@@ -66,18 +62,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, GOOGLE, socialUser);
-                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
             @Override
             public void onError(Throwable error) {
-                toast(error.getMessage());
-                Log.e(TAG, "onError: " + error.getMessage());
+                showToast(error.getMessage());
             }
 
             @Override
             public void onCancel() {
-                toast("Canceled");
+                showToast("Canceled");
             }
         });
     }
@@ -88,17 +82,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, TWITTER, socialUser);
-                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
             @Override
             public void onError(Throwable error) {
-                toast(error.getMessage());
+                showToast(error.getMessage());
             }
 
             @Override
             public void onCancel() {
-                toast("Canceled");
+                showToast("Canceled");
             }
         });
     }
@@ -111,22 +104,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, INSTAGRAM, socialUser);
-                Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
             @Override
             public void onError(Throwable error) {
-                toast(error.getMessage());
+                showToast(error.getMessage());
             }
 
             @Override
             public void onCancel() {
-                toast("Canceled");
+                showToast("Canceled");
             }
         });
     }
 
-    private void toast(String msg) {
+    private void showToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 }
