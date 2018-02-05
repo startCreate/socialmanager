@@ -30,14 +30,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.connectFbButton)
+    @OnClick(R.id.button_facebook)
     void connectFacebook() {
         List<String> scopes = Arrays.asList("user_birthday", "user_friends");
 
         Authentication.getInstance().connectFacebook(scopes, new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
-                ProfileActivity.start(MainActivity.this, FACEBOOK, socialUser);
+                InfoActivity.start(MainActivity.this, FACEBOOK, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.connectGoogleButton)
+    @OnClick(R.id.button_google)
     void connectGoogle() {
         List<String> scopes = Arrays.asList(
                 "https://www.googleapis.com/auth/youtube",
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         Authentication.getInstance().connectGoogle(scopes, new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
-                ProfileActivity.start(MainActivity.this, GOOGLE, socialUser);
+                InfoActivity.start(MainActivity.this, GOOGLE, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.connectTwitterButton)
+    @OnClick(R.id.button_twitter)
     void connectTwitter() {
         Authentication.getInstance().connectTwitter(new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
-                ProfileActivity.start(MainActivity.this, TWITTER, socialUser);
+                InfoActivity.start(MainActivity.this, TWITTER, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.connectIgButton)
+    @OnClick(R.id.button_instagram)
     void connectInstagram() {
         List<String> scopes = Arrays.asList("follower_list", "likes");
 
         Authentication.getInstance().connectInstagram(scopes, new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
-                ProfileActivity.start(MainActivity.this, INSTAGRAM, socialUser);
+                InfoActivity.start(MainActivity.this, INSTAGRAM, socialUser);
                 Log.e(TAG, "onSuccess: " + socialUser.getFullName() + " " + socialUser.getEmail());
             }
 
@@ -129,5 +129,4 @@ public class MainActivity extends AppCompatActivity {
     private void toast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
     }
-
 }

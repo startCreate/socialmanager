@@ -1,55 +1,79 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#555"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <Button
-        android:id="@+id/connectFbButton"
-        android:layout_width="match_parent"
+        android:id="@+id/button_facebook"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"
-        android:background="#3b5998"
+        android:layout_margin="25dp"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
         android:text="@string/connect_fb"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical" />
 
     <Button
-        android:id="@+id/connectGoogleButton"
-        android:layout_width="match_parent"
+        android:id="@+id/button_google"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:background="#34a853"
+        android:layout_margin="25dp"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
         android:text="@string/connect_google"
-        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textColor="@android:color/white" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizontal" />
 
     <Button
-        android:id="@+id/connectTwitterButton"
-        android:layout_width="match_parent"
+        android:id="@+id/button_twitter"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#1da1f2"
+        android:layout_margin="25dp"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
         android:text="@string/connect_twitter"
-        android:textAllCaps="false"
-        android:layout_marginBottom="30dp"
+        android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textColor="@android:color/white" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical" />
 
     <Button
-        android:id="@+id/connectIgButton"
-        android:layout_width="match_parent"
+        android:id="@+id/button_instagram"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#ca2e98"
+        android:layout_margin="25dp"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
         android:text="@string/connect_ig"
-        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:textColor="@android:color/white" />
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal" />
 
-</LinearLayout>
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</android.support.constraint.ConstraintLayout>

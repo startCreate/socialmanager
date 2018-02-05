@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProfileActivity extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity {
 
     @BindView(R.id.userView)
     TextView userView;
@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String type;
 
     public static void start(Context context, String type, NetworklUser socialUser) {
-        Intent intent = new Intent(context, ProfileActivity.class);
+        Intent intent = new Intent(context, InfoActivity.class);
         intent.putExtra(EXTRA_USER, socialUser);
         intent.putExtra(EXTRA_TYPE, type);
         context.startActivity(intent);
@@ -37,13 +37,11 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_info);
         ButterKnife.bind(this);
 
         NetworklUser socialUser = getIntent().getParcelableExtra(EXTRA_USER);
-
         userView.setText(socialUser.toString());
-
         type = getIntent().getStringExtra(EXTRA_TYPE);
     }
 
