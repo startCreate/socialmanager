@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">library</string>
-    <string name="facebookAppId">com.facebook.sdk.ApplicationId</string>
-    <string name="sa_com.jaychang.sa.googleWebClientId">com.applikeysolutions.googleWebClientId</string>
-</resources>
