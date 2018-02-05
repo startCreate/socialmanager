@@ -38,6 +38,5 @@ public class Utils {
     public static boolean getBoolean(Context context, String key) {
         return PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(key, false);
     }
-
 }
 

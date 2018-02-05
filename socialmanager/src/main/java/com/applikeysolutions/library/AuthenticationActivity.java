@@ -46,5 +46,4 @@ public abstract class AuthenticationActivity extends AppCompatActivity {
     }
 
     protected abstract AuthenticationData getAuthenticationData();
-
 }

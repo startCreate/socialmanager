@@ -7,6 +7,4 @@ public interface AuthenticationCallback {
     void onError(Throwable error);
 
     void onCancel();
-
-
 }

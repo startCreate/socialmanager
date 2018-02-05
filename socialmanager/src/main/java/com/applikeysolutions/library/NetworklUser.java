@@ -116,7 +116,7 @@ public class NetworklUser implements Parcelable {
     }
 
     @Override public String toString() {
-        final StringBuilder sb = new StringBuilder("NetworklUser ").append("\n\n");
+        final StringBuilder sb = new StringBuilder("NetworklUser").append("\n\n");
         sb.append("userId=").append(userId).append("\n\n");
         sb.append("userName=").append(userName).append("\n\n");
         sb.append("fullName=").append(fullName).append("\n\n");
@@ -192,5 +192,4 @@ public class NetworklUser implements Parcelable {
             return new NetworklUser(this);
         }
     }
-
 }

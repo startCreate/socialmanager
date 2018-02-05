@@ -80,12 +80,10 @@ public class FacebookAuthActivity extends AuthenticationActivity
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         callbackManager = CallbackManager.Factory.create();
         if (Utils.isFacebookInstalled(this)) {
             LoginManager.getInstance().logOut();
         }
-
         LoginManager.getInstance().registerCallback(callbackManager, this);
         LoginManager.getInstance().logInWithReadPermissions(this, getScopes());
     }

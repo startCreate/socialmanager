@@ -20,5 +20,4 @@ public class AuthenticationData {
     public AuthenticationCallback getCallback() {
         return callback;
     }
-
 }

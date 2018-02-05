@@ -24,8 +24,7 @@ import com.google.android.gms.common.api.Scope;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleAuthActivity extends AuthenticationActivity
-        implements GoogleApiClient.OnConnectionFailedListener,
+public class GoogleAuthActivity extends AuthenticationActivity implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
     private static final int RC_SIGN_IN = 1000;
@@ -200,7 +199,6 @@ public class GoogleAuthActivity extends AuthenticationActivity
         for (String str : getAuthenticationData().getScopes()) {
             scopes.add(new Scope(str));
         }
-
         return scopes;
     }
 
@@ -208,5 +206,4 @@ public class GoogleAuthActivity extends AuthenticationActivity
 
         void onTokenReady(String accessToken);
     }
-
 }
