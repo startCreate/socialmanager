@@ -12,7 +12,6 @@ import android.webkit.WebViewClient;
 
 import com.applikeysolutions.library.Authentication;
 import com.applikeysolutions.library.AuthenticationActivity;
-import com.applikeysolutions.library.AuthenticationData;
 import com.applikeysolutions.library.NetworklUser;
 import com.applikeysolutions.library.R;
 import com.applikeysolutions.library.Utils;
@@ -20,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -52,7 +52,7 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         clientId = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientId));
         clientSecret = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramClientSecret));
         redirectUri = Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_instagramRedirectUri));
-        String scopes = TextUtils.join("+", getAuthenticationData().getScopes());
+        String scopes = TextUtils.join("+", getAuthScopes());
 
         String url = String.format(AUTH_URL, clientId, redirectUri, scopes);
 
@@ -88,8 +88,8 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         Authentication.getInstance().onLoginCancel();
     }
 
-    @Override protected AuthenticationData getAuthenticationData() {
-        return Authentication.getInstance().getInstagramAuthData();
+    @Override protected List<String> getAuthScopes() {
+        return Authentication.getInstance().getInstagramScopes();
     }
 
     private void getCode(Uri uri) {
@@ -129,10 +129,9 @@ public class InstagramAuthActivity extends AuthenticationActivity {
             @Override public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     runOnUiThread(() -> {
-                        Authentication.getInstance().onLoginError(new RuntimeException("Failed to get access token."));
+//                        Authentication.getInstance().onLoginError(new RuntimeException("Failed to get access token."));
                         dismissProgress();
-                    //    handleError(new Throwable("Failed to get access token."));
-                        finish();
+                        handleError(new Throwable("Failed to get access token."));
                     });
                     return;
                 }
@@ -151,9 +150,8 @@ public class InstagramAuthActivity extends AuthenticationActivity {
 
                 runOnUiThread(() -> {
                     dismissProgress();
-                    Authentication.getInstance().onLoginSuccess(user);
-                    //handleSuccess(user);
-                    finish();
+//                    Authentication.getInstance().onLoginSuccess(user);
+                    handleSuccess(user);
                 });
             }
         });

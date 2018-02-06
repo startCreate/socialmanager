@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import java.util.List;
+
 public abstract class AuthenticationActivity extends AppCompatActivity {
 
     protected ProgressDialog dialog;
@@ -16,17 +18,20 @@ public abstract class AuthenticationActivity extends AppCompatActivity {
     }
 
     protected void handCancel() {
-        getAuthenticationData().getCallback().onCancel();
+        Authentication.getInstance().onLoginCancel();
+     //   getScopes().getCallback().onCancel();
         finish();
     }
 
     protected void handleError(Throwable error) {
-        getAuthenticationData().getCallback().onError(error);
+Authentication.getInstance().onLoginError(error);
+//        getScopes().getCallback().onError(error);
         finish();
     }
 
     protected void handleSuccess(NetworklUser user) {
-        getAuthenticationData().getCallback().onSuccess(user);
+        Authentication.getInstance().onLoginSuccess(user);
+//        getScopes().getCallback().onSuccess(user);
         finish();
     }
 
@@ -45,5 +50,5 @@ public abstract class AuthenticationActivity extends AppCompatActivity {
         }
     }
 
-    protected abstract AuthenticationData getAuthenticationData();
+    protected abstract List<String> getAuthScopes();
 }

@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 
 import com.applikeysolutions.library.Authentication;
 import com.applikeysolutions.library.AuthenticationActivity;
-import com.applikeysolutions.library.AuthenticationData;
 import com.applikeysolutions.library.NetworklUser;
 import com.applikeysolutions.library.Utils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
@@ -22,6 +22,7 @@ import com.facebook.login.LoginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,16 +68,16 @@ public class FacebookAuthActivity extends AuthenticationActivity
     }
 
     @Override public void onCancel() {
-        Authentication.getInstance().onLoginCancel();
-        /*handCancel();*/
+      //  Authentication.getInstance().onLoginCancel();
+        handCancel();
     }
 
     @Override public void onError(FacebookException error) {
-       /* handleError(error);
+        handleError(error);
         if (error instanceof FacebookAuthorizationException) {
             LoginManager.getInstance().logOut();
-        }*/
-       Authentication.getInstance().onLoginError(error.getCause());
+        }
+       //Authentication.getInstance().onLoginError(error.getCause());
     }
 
     @Override public void onCompleted(JSONObject object, GraphResponse response) {
@@ -91,21 +92,21 @@ public class FacebookAuthActivity extends AuthenticationActivity
                     .build();
 
             dismissProgress();
-            Authentication.getInstance().onLoginSuccess(user);
-          // handleSuccess(user);
+           // Authentication.getInstance().onLoginSuccess(user);
+           handleSuccess(user);
         } catch (JSONException e) {
             dismissProgress();
-            Authentication.getInstance().onLoginError(e.getCause());
-            //handleError(e);
+          //  Authentication.getInstance().onLoginError(e.getCause());
+            handleError(e);
         }
     }
 
-    @Override protected AuthenticationData getAuthenticationData() {
-        return Authentication.getInstance().getFacebookAuthData();
+    @Override protected List<String> getAuthScopes() {
+        return Authentication.getInstance().getFacebookScopes();
     }
 
     private List<String> getScopes() {
-        List<String> scopes = getAuthenticationData().getScopes();
+        List<String> scopes = new ArrayList<>(getAuthScopes());
         if (scopes.size() <= 0) {
             scopes = DEFAULT_SCOPES;
         } else if (!scopes.contains(DEFAULT_SCOPES.get(0))) {

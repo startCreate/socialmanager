@@ -10,7 +10,6 @@ import android.text.TextUtils;
 
 import com.applikeysolutions.library.Authentication;
 import com.applikeysolutions.library.AuthenticationActivity;
-import com.applikeysolutions.library.AuthenticationData;
 import com.applikeysolutions.library.NetworklUser;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
@@ -57,14 +56,14 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
     @Override public void onConnected(@Nullable Bundle bundle) {
         Runnable signIn = () -> {
             retrySignIn = true;
-            GoogleAuthActivity.this.startSignInFlows();
+            GoogleAuthActivity.this.signIn();
         };
         if (isGoogleDisconnectRequested()) {
             handleDisconnectRequest(signIn);
         } else if (isGoogleRevokeRequested()) {
             handleRevokeRequest(signIn);
         } else {
-            startSignInFlows();
+            signIn();
         }
     }
 
@@ -90,8 +89,8 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
         handleError(error);
     }
 
-    @Override protected AuthenticationData getAuthenticationData() {
-        return Authentication.getInstance().getGoogleAuthData();
+    protected List<String> getAuthScopes() {
+        return Authentication.getInstance().getGoogleScopes();
     }
 
     private boolean isGoogleRevokeRequested() {
@@ -104,9 +103,9 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result == null) {
-            //handCancel();
-            Authentication.getInstance().onLoginCancel();
-            finish();
+            handCancel();
+//            Authentication.getInstance().onLoginCancel();
+//            finish();
             return;
         }
         if (result.isSuccess() && result.getSignInAccount() != null) {
@@ -121,21 +120,20 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
 
             getAccessToken(acct, accessToken -> {
                 user.setAccessToken(accessToken);
-                Authentication.getInstance().onLoginSuccess(user);
-        //        GoogleAuthActivity.this.handleSuccess(user);
+                //Authentication.getInstance().onLoginSuccess(user);
+                handleSuccess(user);
             });
         } else {
             String errorMsg = result.getStatus().getStatusMessage();
             if (errorMsg == null) {
-               // handCancel();
-                Authentication.getInstance().onLoginCancel();
+                handCancel();
+//                Authentication.getInstance().onLoginCancel();
             } else {
                 Throwable error = new Throwable(result.getStatus().getStatusMessage());
-               // handleError(error);
-                Authentication.getInstance().onLoginError(error.getCause());
+                handleError(error);
+//                Authentication.getInstance().onLoginError(error.getCause());
             }
         }
-        finish();
     }
 
     private void getAccessToken(final GoogleSignInAccount account, final AccessTokenListener listener) {
@@ -145,7 +143,7 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
             try {
                 if (account.getAccount() == null) {
                     dismissProgress();
-                    GoogleAuthActivity.this.handleError(new RuntimeException("Account is null"));
+                    handleError(new RuntimeException("Account is null"));
                 } else {
                     dismissProgress();
                     Authentication.getInstance().setGoogleDisconnectRequested(false);
@@ -156,15 +154,15 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
             } catch (Exception e) {
                 e.printStackTrace();
                 dismissProgress();
-                GoogleAuthActivity.this.handleError(e);
+                handleError(e);
             }
         });
     }
 
     private String getAccessTokenScope() {
         String scopes = "oauth2:id profile email";
-        if (getAuthenticationData().getScopes().size() > 0) {
-            scopes = "oauth2:" + TextUtils.join(" ", getAuthenticationData().getScopes());
+        if (getAuthScopes().size() > 0) {
+            scopes = "oauth2:" + TextUtils.join(" ", getAuthScopes());
         }
         return scopes;
     }
@@ -183,7 +181,7 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
         });
     }
 
-    private void startSignInFlows() {
+    private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -202,7 +200,7 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
 
     private List<Scope> getScopes() {
         List<Scope> scopes = new ArrayList<>();
-        for (String str : getAuthenticationData().getScopes()) {
+        for (String str : getAuthScopes()) {
             scopes.add(new Scope(str));
         }
         return scopes;

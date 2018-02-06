@@ -17,6 +17,8 @@ import butterknife.OnClick;
 
 public class InfoActivity extends AppCompatActivity {
 
+    @BindView(R.id.network)
+    TextView network;
     @BindView(R.id.userView)
     TextView userView;
     @BindView(R.id.disconnectButton)
@@ -43,6 +45,7 @@ public class InfoActivity extends AppCompatActivity {
         NetworklUser socialUser = getIntent().getParcelableExtra(EXTRA_USER);
         userView.setText(socialUser.toString());
         type = getIntent().getStringExtra(EXTRA_TYPE);
+        network.setText(type);
     }
 
     @OnClick(R.id.disconnectButton)

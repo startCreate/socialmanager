@@ -8,6 +8,17 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Network" />
+
+    <TextView
         android:id="@+id/userView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +26,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/network"
         tools:text="USER INFO" />
 
     <Button

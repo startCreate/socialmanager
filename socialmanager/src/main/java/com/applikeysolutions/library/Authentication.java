@@ -3,7 +3,6 @@ package com.applikeysolutions.library;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.CookieManager;
@@ -41,13 +40,12 @@ public class Authentication {
     @SuppressLint("StaticFieldLeak")
     private static Authentication instance;
     private Context appContext;
-    private AuthenticationData facebookAuthData;
-    private AuthenticationData googleAuthData;
-    private AuthenticationData twitterAuthData;
-    private AuthenticationData instagramAuthData;
+    private List<String> facebookScopes = new ArrayList<>();
+    private List<String> googleScopes = new ArrayList<>();
+    private List<String> twitterScopes = new ArrayList<>();
+    private List<String> instagramScopes = new ArrayList<>();
     private PublishSubject<NetworklUser> userEmitter;
     private Network network;
-    List<String> scopes = new ArrayList<>();
 
     private Authentication() {
     }
@@ -125,8 +123,8 @@ public class Authentication {
         }
     }
 
-    public Authentication connectFacebook(@Nullable List<String> scopes,/* @NonNull */AuthenticationCallback listener) {
-        facebookAuthData = new AuthenticationData(scopes, listener);
+    public Authentication connectFacebook(@Nullable List<String> scopes) {
+        facebookScopes = scopes;
       //  FacebookAuthActivity.start(appContext);
        network = FACEBOOK;
        //this.scopes = scopes;
@@ -134,79 +132,67 @@ public class Authentication {
        return this;
     }
 
-    public void connectFacebook(@NonNull AuthenticationCallback listener) {
-        connectFacebook(Collections.<String>emptyList(), listener);
-    }
-
     public void disconnectFacebook() {
-        facebookAuthData = null;
+        facebookScopes = null;
         LoginManager.getInstance().logOut();
     }
 
-    public Authentication connectGoogle(@Nullable List<String> scopes,/* @NonNull */AuthenticationCallback listener) {
-        googleAuthData = new AuthenticationData(scopes, listener);
+    public Authentication connectGoogle(@Nullable List<String> scopes) {
+        googleScopes = scopes;
         network = GOOGLE;
         return this;
         //GoogleAuthActivity.start(appContext);
     }
 
-    public void connectGoogle(@NonNull AuthenticationCallback listener) {
-        connectGoogle(Collections.<String>emptyList(), listener);
-    }
-
     public void disconnectGoogle() {
-        googleAuthData = null;
+        googleScopes = null;
         setGoogleDisconnectRequested(true);
     }
 
     public void revokeGoogle() {
-        googleAuthData = null;
+        googleScopes = null;
         setGoogleRevokeRequested(true);
     }
 
-    public Authentication connectTwitter(@NonNull AuthenticationCallback listener) {
-        twitterAuthData = new AuthenticationData(Collections.<String>emptyList(), listener);
+    public Authentication connectTwitter() {
+        twitterScopes = Collections.<String>emptyList();
      //   TwitterAuthActivity.start(appContext);
         network = TWITTER;
         return this;
     }
 
     public void disconnectTwitter() {
-        twitterAuthData = null;
+        twitterScopes = null;
         TwitterCore.getInstance().getSessionManager().clearActiveSession();
         clearCookies();
     }
 
-    public Authentication connectInstagram(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
-        instagramAuthData = new AuthenticationData(scopes, listener);
+    public Authentication connectInstagram(@Nullable List<String> scopes) {
+        instagramScopes = scopes;
        // InstagramAuthActivity.start(appContext);
         network = INSTAGRAM;
         return this;
     }
 
-    public void connectInstagram(@NonNull AuthenticationCallback listener) {
-        connectInstagram(Collections.<String>emptyList(), listener);
-    }
-
     public void disconnectInstagram() {
-        instagramAuthData = null;
+        instagramScopes = null;
         clearCookies();
     }
 
-    public AuthenticationData getFacebookAuthData() {
-        return facebookAuthData;
+    public List<String> getFacebookScopes() {
+        return facebookScopes;
     }
 
-    public AuthenticationData getGoogleAuthData() {
-        return googleAuthData;
+    public List<String> getGoogleScopes() {
+        return googleScopes;
     }
 
-    public AuthenticationData getTwitterAuthData() {
-        return twitterAuthData;
+    public List<String> getTwitterScopes() {
+        return twitterScopes;
     }
 
-    public AuthenticationData getInstagramAuthData() {
-        return instagramAuthData;
+    public List<String> getInstagramScopes() {
+        return instagramScopes;
     }
 
     public boolean isGoogleDisconnectRequested() {

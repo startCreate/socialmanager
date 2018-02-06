@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 
 import com.applikeysolutions.library.Authentication;
 import com.applikeysolutions.library.AuthenticationActivity;
-import com.applikeysolutions.library.AuthenticationData;
 import com.applikeysolutions.library.NetworklUser;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -19,6 +18,8 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.services.AccountService;
+
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -49,9 +50,8 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_CANCELED) {
-            //handleCancel();
-            Authentication.getInstance().onLoginCancel();
-            finish();
+            handleCancel();
+//            Authentication.getInstance().onLoginCancel();
             return;
         }
 
@@ -71,13 +71,13 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         }
 
         @Override public void failure(TwitterException exception) {
-            Authentication.getInstance().onLoginError(exception);
-           // handleError(exception);
+//            Authentication.getInstance().onLoginError(exception);
+            handleError(exception);
         }
     };
 
-    @Override protected AuthenticationData getAuthenticationData() {
-        return Authentication.getInstance().getTwitterAuthData();
+    @Override protected List<String> getAuthScopes() {
+        return Authentication.getInstance().getTwitterScopes();
     }
 
     private TwitterAuthClient getTwitterAuthClient() {
@@ -112,16 +112,15 @@ public class TwitterAuthActivity extends AuthenticationActivity {
                         .pageLink(String.format(PAGE_LINK, data.screenName))
                         .build();
 
-                Authentication.getInstance().onLoginSuccess(user);
-               // handleSuccess(user);
+//                Authentication.getInstance().onLoginSuccess(user);
+                handleSuccess(user);
 
             }
 
             public void failure(TwitterException error) {
                 dismissProgress();
-              //  handleError(error);
-                Authentication.getInstance().onLoginError(error);
-                finish();
+                handleError(error);
+//                Authentication.getInstance().onLoginError(error);
             }
         });
     }
