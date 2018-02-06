@@ -45,9 +45,6 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         context.startActivity(intent);
     }
 
-    @Override public void onBackPressed() {
-        handCancel();
-    }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +82,12 @@ public class InstagramAuthActivity extends AuthenticationActivity {
         setContentView(webView);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Authentication.getInstance().onLoginCancel();
+    }
+
     @Override protected AuthenticationData getAuthenticationData() {
         return Authentication.getInstance().getInstagramAuthData();
     }
@@ -118,15 +121,18 @@ public class InstagramAuthActivity extends AuthenticationActivity {
             @Override public void onFailure(Call call, final IOException e) {
                 runOnUiThread(() -> {
                     dismissProgress();
-                    handleError(e);
+                    Authentication.getInstance().onLoginError(new RuntimeException("login fail"));
+                    finish();
                 });
             }
 
             @Override public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     runOnUiThread(() -> {
+                        Authentication.getInstance().onLoginError(new RuntimeException("Failed to get access token."));
                         dismissProgress();
-                        handleError(new Throwable("Failed to get access token."));
+                    //    handleError(new Throwable("Failed to get access token."));
+                        finish();
                     });
                     return;
                 }
@@ -145,7 +151,9 @@ public class InstagramAuthActivity extends AuthenticationActivity {
 
                 runOnUiThread(() -> {
                     dismissProgress();
-                    handleSuccess(user);
+                    Authentication.getInstance().onLoginSuccess(user);
+                    //handleSuccess(user);
+                    finish();
                 });
             }
         });

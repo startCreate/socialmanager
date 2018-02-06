@@ -12,7 +12,6 @@ import com.applikeysolutions.library.NetworklUser;
 import com.applikeysolutions.library.Utils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
@@ -33,13 +32,32 @@ public class FacebookAuthActivity extends AuthenticationActivity
     private static final List<String> DEFAULT_SCOPES = Arrays.asList("email", "public_profile");
     private CallbackManager callbackManager;
 
+
+    // TODO: 2/6/18 change start to getIntent
     public static void start(Context context) {
         Intent intent = new Intent(context, FacebookAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        callbackManager = CallbackManager.Factory.create();
+        if (Utils.isFacebookInstalled(this)) {
+            LoginManager.getInstance().logOut();
+        }
+        LoginManager.getInstance().registerCallback(callbackManager, this);
+        LoginManager.getInstance().logInWithReadPermissions(this, getScopes());
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override public void onSuccess(LoginResult loginResult) {
+
+
         showDialog();
         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), this);
         Bundle parameters = new Bundle();
@@ -49,14 +67,16 @@ public class FacebookAuthActivity extends AuthenticationActivity
     }
 
     @Override public void onCancel() {
-        handCancel();
+        Authentication.getInstance().onLoginCancel();
+        /*handCancel();*/
     }
 
     @Override public void onError(FacebookException error) {
-        handleError(error);
+       /* handleError(error);
         if (error instanceof FacebookAuthorizationException) {
             LoginManager.getInstance().logOut();
-        }
+        }*/
+       Authentication.getInstance().onLoginError(error.getCause());
     }
 
     @Override public void onCompleted(JSONObject object, GraphResponse response) {
@@ -71,30 +91,17 @@ public class FacebookAuthActivity extends AuthenticationActivity
                     .build();
 
             dismissProgress();
-            handleSuccess(user);
+            Authentication.getInstance().onLoginSuccess(user);
+          // handleSuccess(user);
         } catch (JSONException e) {
             dismissProgress();
-            handleError(e);
+            Authentication.getInstance().onLoginError(e.getCause());
+            //handleError(e);
         }
-    }
-
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        callbackManager = CallbackManager.Factory.create();
-        if (Utils.isFacebookInstalled(this)) {
-            LoginManager.getInstance().logOut();
-        }
-        LoginManager.getInstance().registerCallback(callbackManager, this);
-        LoginManager.getInstance().logInWithReadPermissions(this, getScopes());
     }
 
     @Override protected AuthenticationData getAuthenticationData() {
         return Authentication.getInstance().getFacebookAuthData();
-    }
-
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private List<String> getScopes() {

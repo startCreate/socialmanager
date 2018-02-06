@@ -49,7 +49,9 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_CANCELED) {
-            handleCancel();
+            //handleCancel();
+            Authentication.getInstance().onLoginCancel();
+            finish();
             return;
         }
 
@@ -69,7 +71,8 @@ public class TwitterAuthActivity extends AuthenticationActivity {
         }
 
         @Override public void failure(TwitterException exception) {
-            handleError(exception);
+            Authentication.getInstance().onLoginError(exception);
+           // handleError(exception);
         }
     };
 
@@ -109,12 +112,16 @@ public class TwitterAuthActivity extends AuthenticationActivity {
                         .pageLink(String.format(PAGE_LINK, data.screenName))
                         .build();
 
-                handleSuccess(user);
+                Authentication.getInstance().onLoginSuccess(user);
+               // handleSuccess(user);
+
             }
 
             public void failure(TwitterException error) {
                 dismissProgress();
-                handleError(error);
+              //  handleError(error);
+                Authentication.getInstance().onLoginError(error);
+                finish();
             }
         });
     }

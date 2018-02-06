@@ -20,9 +20,17 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
+import static com.applikeysolutions.library.Network.FACEBOOK;
+import static com.applikeysolutions.library.Network.GOOGLE;
+import static com.applikeysolutions.library.Network.INSTAGRAM;
+import static com.applikeysolutions.library.Network.TWITTER;
 import static com.twitter.sdk.android.core.TwitterConfig.Builder;
 
 public class Authentication {
@@ -37,6 +45,9 @@ public class Authentication {
     private AuthenticationData googleAuthData;
     private AuthenticationData twitterAuthData;
     private AuthenticationData instagramAuthData;
+    private PublishSubject<NetworklUser> userEmitter;
+    private Network network;
+    List<String> scopes = new ArrayList<>();
 
     private Authentication() {
     }
@@ -59,9 +70,68 @@ public class Authentication {
         getInstance().initTwitter(appContext);
     }
 
-    public void connectFacebook(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
+    public Observable<NetworklUser> login() {
+        userEmitter = PublishSubject.create();
+        /*appContext.startActivity(*/getIntent()/*)*/;
+        return userEmitter;
+    }
+
+
+    public void onLoginSuccess(NetworklUser socialUser) {
+        if (userEmitter != null) {
+         //   NetworklUser copy = new NetworklUser(socialUser);
+            userEmitter.onNext(socialUser);
+            userEmitter.onComplete();
+        }
+    }
+
+    public void onLoginError(Throwable throwable) {
+        if (userEmitter != null) {
+            Throwable copy = new Throwable(throwable);
+            userEmitter.onError(copy);
+        }
+    }
+
+    public void onLoginCancel() {
+        if (userEmitter != null) {
+            userEmitter.onComplete();
+        }
+    }
+
+    public void getIntent() {
+        if (network == FACEBOOK) {
+            FacebookAuthActivity.start(appContext);
+           /* Intent intent = new Intent(appContext, FbLoginHiddenActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return intent;*/
+        } else if (network == GOOGLE) {
+            GoogleAuthActivity.start(appContext);
+           /* Intent intent = new Intent(appContext, GoogleLoginHiddenActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, igClientId);
+            return intent;*/
+        } else if (network == INSTAGRAM) {
+            InstagramAuthActivity.start(appContext);
+            /*Intent intent = new Intent(appContext, IgLoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(IgLoginActivity.EXTRA_CLIENT_ID, igClientId);
+            intent.putExtra(IgLoginActivity.EXTRA_CLIENT_SECRET, igCleintSecret);
+            intent.putExtra(IgLoginActivity.EXTRA_REDIRECT_URL, igRedirectUrl);
+            return intent;*/
+        }else if (network == TWITTER){
+            TwitterAuthActivity.start(appContext);
+        } else {
+            throw new RuntimeException("No such network");
+        }
+    }
+
+    public Authentication connectFacebook(@Nullable List<String> scopes,/* @NonNull */AuthenticationCallback listener) {
         facebookAuthData = new AuthenticationData(scopes, listener);
-        FacebookAuthActivity.start(appContext);
+      //  FacebookAuthActivity.start(appContext);
+       network = FACEBOOK;
+       //this.scopes = scopes;
+
+       return this;
     }
 
     public void connectFacebook(@NonNull AuthenticationCallback listener) {
@@ -73,9 +143,11 @@ public class Authentication {
         LoginManager.getInstance().logOut();
     }
 
-    public void connectGoogle(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
+    public Authentication connectGoogle(@Nullable List<String> scopes,/* @NonNull */AuthenticationCallback listener) {
         googleAuthData = new AuthenticationData(scopes, listener);
-        GoogleAuthActivity.start(appContext);
+        network = GOOGLE;
+        return this;
+        //GoogleAuthActivity.start(appContext);
     }
 
     public void connectGoogle(@NonNull AuthenticationCallback listener) {
@@ -92,9 +164,11 @@ public class Authentication {
         setGoogleRevokeRequested(true);
     }
 
-    public void connectTwitter(@NonNull AuthenticationCallback listener) {
+    public Authentication connectTwitter(@NonNull AuthenticationCallback listener) {
         twitterAuthData = new AuthenticationData(Collections.<String>emptyList(), listener);
-        TwitterAuthActivity.start(appContext);
+     //   TwitterAuthActivity.start(appContext);
+        network = TWITTER;
+        return this;
     }
 
     public void disconnectTwitter() {
@@ -103,9 +177,11 @@ public class Authentication {
         clearCookies();
     }
 
-    public void connectInstagram(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
+    public Authentication connectInstagram(@Nullable List<String> scopes, @NonNull AuthenticationCallback listener) {
         instagramAuthData = new AuthenticationData(scopes, listener);
-        InstagramAuthActivity.start(appContext);
+       // InstagramAuthActivity.start(appContext);
+        network = INSTAGRAM;
+        return this;
     }
 
     public void connectInstagram(@NonNull AuthenticationCallback listener) {

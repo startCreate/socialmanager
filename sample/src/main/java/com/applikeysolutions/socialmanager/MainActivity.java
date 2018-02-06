@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.applikeysolutions.library.Authentication;
-import com.applikeysolutions.library.AuthenticationCallback;
-import com.applikeysolutions.library.NetworklUser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     void connectFacebook() {
         List<String> scopes = Arrays.asList("user_birthday", "user_friends");
 
-        Authentication.getInstance().connectFacebook(scopes, new AuthenticationCallback() {
+       /* Authentication.getInstance().connectFacebook(scopes, new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, FACEBOOK, socialUser);
@@ -48,7 +46,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel() {
                 showToast("Canceled");
             }
-        });
+        });*/
+
+       Authentication.getInstance().connectFacebook(scopes,null).login()
+       .subscribe(user ->
+               InfoActivity.start(MainActivity.this, GOOGLE, user));
+
     }
 
     @OnClick(R.id.button_google)
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 "https://www.googleapis.com/auth/youtube.upload"
         );
 
-        Authentication.getInstance().connectGoogle(scopes, new AuthenticationCallback() {
+       /* Authentication.getInstance().connectGoogle(scopes, new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, GOOGLE, socialUser);
@@ -73,12 +76,14 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel() {
                 showToast("Canceled");
             }
-        });
+        });*/
+
+       Authentication.getInstance().connectGoogle(scopes,null).login().subscribe(networklUser -> InfoActivity.start(MainActivity.this, GOOGLE, networklUser));
     }
 
     @OnClick(R.id.button_twitter)
     void connectTwitter() {
-        Authentication.getInstance().connectTwitter(new AuthenticationCallback() {
+       /* Authentication.getInstance().connectTwitter(new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, TWITTER, socialUser);
@@ -93,14 +98,15 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel() {
                 showToast("Canceled");
             }
-        });
+        });*/
+       Authentication.getInstance().connectTwitter(null).login().subscribe(networklUser -> InfoActivity.start(MainActivity.this,TWITTER, networklUser));
     }
 
     @OnClick(R.id.button_instagram)
     void connectInstagram() {
         List<String> scopes = Arrays.asList("follower_list", "likes");
 
-        Authentication.getInstance().connectInstagram(scopes, new AuthenticationCallback() {
+       /* Authentication.getInstance().connectInstagram(scopes, new AuthenticationCallback() {
             @Override
             public void onSuccess(NetworklUser socialUser) {
                 InfoActivity.start(MainActivity.this, INSTAGRAM, socialUser);
@@ -115,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel() {
                 showToast("Canceled");
             }
-        });
+        });*/
+       Authentication.getInstance().connectInstagram(scopes,null).login().subscribe(networklUser -> InfoActivity.start(this, INSTAGRAM,networklUser));
     }
 
     private void showToast(String msg) {

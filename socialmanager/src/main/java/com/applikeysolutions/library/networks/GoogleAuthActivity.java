@@ -37,42 +37,6 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
         context.startActivity(intent);
     }
 
-    @Override public void onConnected(@Nullable Bundle bundle) {
-        Runnable signIn = () -> {
-            retrySignIn = true;
-            GoogleAuthActivity.this.startSignInFlows();
-        };
-        if (isGoogleDisconnectRequested()) {
-            handleDisconnectRequest(signIn);
-        } else if (isGoogleRevokeRequested()) {
-            handleRevokeRequest(signIn);
-        } else {
-            startSignInFlows();
-        }
-    }
-
-    @Override public void onConnectionSuspended(int i) {
-        handleError(new Throwable("connection suspended."));
-    }
-
-    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Throwable error = new Throwable(connectionResult.getErrorMessage());
-        handleError(error);
-    }
-
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode != RC_SIGN_IN || resultCode != RESULT_OK) {
-            return;
-        }
-        GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-        if ((!isGoogleDisconnectRequested() && !isGoogleRevokeRequested()) || retrySignIn) {
-            retrySignIn = false;
-            handleSignInResult(signInResult);
-        }
-    }
-
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -90,6 +54,42 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
                 .build();
     }
 
+    @Override public void onConnected(@Nullable Bundle bundle) {
+        Runnable signIn = () -> {
+            retrySignIn = true;
+            GoogleAuthActivity.this.startSignInFlows();
+        };
+        if (isGoogleDisconnectRequested()) {
+            handleDisconnectRequest(signIn);
+        } else if (isGoogleRevokeRequested()) {
+            handleRevokeRequest(signIn);
+        } else {
+            startSignInFlows();
+        }
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != RC_SIGN_IN || resultCode != RESULT_OK) {
+            return;
+        }
+        GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        if ((!isGoogleDisconnectRequested() && !isGoogleRevokeRequested()) || retrySignIn) {
+            retrySignIn = false;
+            handleSignInResult(signInResult);
+        }
+    }
+
+    @Override public void onConnectionSuspended(int i) {
+        handleError(new Throwable("connection suspended."));
+    }
+
+    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Throwable error = new Throwable(connectionResult.getErrorMessage());
+        handleError(error);
+    }
+
     @Override protected AuthenticationData getAuthenticationData() {
         return Authentication.getInstance().getGoogleAuthData();
     }
@@ -104,7 +104,9 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result == null) {
-            handCancel();
+            //handCancel();
+            Authentication.getInstance().onLoginCancel();
+            finish();
             return;
         }
         if (result.isSuccess() && result.getSignInAccount() != null) {
@@ -119,17 +121,21 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
 
             getAccessToken(acct, accessToken -> {
                 user.setAccessToken(accessToken);
-                GoogleAuthActivity.this.handleSuccess(user);
+                Authentication.getInstance().onLoginSuccess(user);
+        //        GoogleAuthActivity.this.handleSuccess(user);
             });
         } else {
             String errorMsg = result.getStatus().getStatusMessage();
             if (errorMsg == null) {
-                handCancel();
+               // handCancel();
+                Authentication.getInstance().onLoginCancel();
             } else {
                 Throwable error = new Throwable(result.getStatus().getStatusMessage());
-                handleError(error);
+               // handleError(error);
+                Authentication.getInstance().onLoginError(error.getCause());
             }
         }
+        finish();
     }
 
     private void getAccessToken(final GoogleSignInAccount account, final AccessTokenListener listener) {
