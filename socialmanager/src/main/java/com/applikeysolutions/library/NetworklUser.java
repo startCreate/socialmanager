@@ -21,6 +21,8 @@ public class NetworklUser implements Parcelable {
     private String fullName;
     private String email;
     private String pageLink;
+    private String tokenId;
+    private String serverAuthCode;
 
     private NetworklUser(Builder builder) {
         userId = builder.userId;
@@ -30,6 +32,8 @@ public class NetworklUser implements Parcelable {
         fullName = builder.fullName;
         email = builder.email;
         pageLink = builder.pageLink;
+        tokenId = builder.tokenId;
+        serverAuthCode = builder.serverAuthCode;
     }
 
     protected NetworklUser(Parcel in) {
@@ -40,66 +44,12 @@ public class NetworklUser implements Parcelable {
         this.fullName = in.readString();
         this.email = in.readString();
         this.pageLink = in.readString();
+        this.tokenId = in.readString();
+        this.serverAuthCode = in.readString();
     }
 
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPageLink() {
-        return pageLink;
-    }
-
-    public void setPageLink(String pageLink) {
-        this.pageLink = pageLink;
     }
 
     @Override public boolean equals(Object o) {
@@ -124,6 +74,8 @@ public class NetworklUser implements Parcelable {
         sb.append("profilePictureUrl=").append(profilePictureUrl).append("\n\n");
         sb.append("pageLink=").append(pageLink).append("\n\n");
         sb.append("accessToken=").append(accessToken).append("\n\n");
+        sb.append("tokenId=").append(tokenId).append("\n\n");
+        sb.append("serverAuthCode=").append(serverAuthCode).append("\n\n");
         return sb.toString();
     }
 
@@ -139,6 +91,8 @@ public class NetworklUser implements Parcelable {
         dest.writeString(this.fullName);
         dest.writeString(this.email);
         dest.writeString(this.pageLink);
+        dest.writeString(this.tokenId);
+        dest.writeString(this.serverAuthCode);
     }
 
     public static final class Builder {
@@ -149,6 +103,8 @@ public class NetworklUser implements Parcelable {
         private String fullName;
         private String email;
         private String pageLink;
+        private String tokenId;
+        private String serverAuthCode;
 
         private Builder() {
         }
@@ -185,6 +141,16 @@ public class NetworklUser implements Parcelable {
 
         public Builder pageLink(String pageLink) {
             this.pageLink = pageLink;
+            return this;
+        }
+
+        public Builder tokenId(String tokenId) {
+            this.tokenId = tokenId;
+            return this;
+        }
+
+        public Builder serverAuthCode(String serverAuthCode) {
+            this.serverAuthCode = serverAuthCode;
             return this;
         }
 

@@ -4,57 +4,65 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.applikeysolutions.library.Authentication;
 import com.applikeysolutions.library.AuthenticationActivity;
 import com.applikeysolutions.library.NetworklUser;
+import com.applikeysolutions.library.R;
+import com.applikeysolutions.library.Utils;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleAuthActivity extends AuthenticationActivity implements GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks {
+public class GoogleAuthActivity extends AuthenticationActivity /*implements GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks*/ {
 
     private static final int RC_SIGN_IN = 1000;
-    private GoogleApiClient googleApiClient;
+    private GoogleSignInClient googleApiClient;
     private boolean retrySignIn;
 
-    public static void start(Context context) {
+    public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, GoogleAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        return intent;
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         GoogleSignInOptions.Builder gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_googleWebClientId)))
+                .requestServerAuthCode(Utils.getMetaDataValue(this, getString(R.string.vv_com_applikeysolutions_library_googleWebClientId)))
                 .requestId()
                 .requestProfile()
                 .requestEmail();
 
         setupScopes(gsoBuilder);
 
-        googleApiClient = new GoogleApiClient.Builder(this)
+        /*googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addConnectionCallbacks(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gsoBuilder.build())
-                .build();
+                .build();*/
+
+        googleApiClient = GoogleSignIn.getClient(this, gsoBuilder.build());
+        signIn();
     }
 
-    @Override public void onConnected(@Nullable Bundle bundle) {
-        Runnable signIn = () -> {
+//    @Override public void onConnected(@Nullable Bundle bundle) {
+      /*  Runnable signIn = () -> {
             retrySignIn = true;
             GoogleAuthActivity.this.signIn();
         };
@@ -64,8 +72,8 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
             handleRevokeRequest(signIn);
         } else {
             signIn();
-        }
-    }
+        }*/
+//    }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -73,21 +81,23 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
         if (requestCode != RC_SIGN_IN || resultCode != RESULT_OK) {
             return;
         }
+        handleSignInResult(GoogleSignIn.getSignedInAccountFromIntent(data));
+
         GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
         if ((!isGoogleDisconnectRequested() && !isGoogleRevokeRequested()) || retrySignIn) {
             retrySignIn = false;
-            handleSignInResult(signInResult);
+            handleSignInResult(GoogleSignIn.getSignedInAccountFromIntent(data));
         }
     }
 
-    @Override public void onConnectionSuspended(int i) {
+  /*  @Override public void onConnectionSuspended(int i) {
         handleError(new Throwable("connection suspended."));
     }
 
     @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Throwable error = new Throwable(connectionResult.getErrorMessage());
         handleError(error);
-    }
+    }*/
 
     protected List<String> getAuthScopes() {
         return Authentication.getInstance().getGoogleScopes();
@@ -101,8 +111,8 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
         return Authentication.getInstance().isGoogleDisconnectRequested();
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (result == null) {
+    private void handleSignInResult(Task<GoogleSignInAccount> result) {
+        /*if (result == null) {
             handCancel();
 //            Authentication.getInstance().onLoginCancel();
 //            finish();
@@ -116,6 +126,7 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
                     .profilePictureUrl(acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "")
                     .email(acct.getEmail())
                     .fullName(acct.getDisplayName())
+                    .tokenId(acct.getIdToken())
                     .build();
 
             getAccessToken(acct, accessToken -> {
@@ -133,6 +144,27 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
                 handleError(error);
 //                Authentication.getInstance().onLoginError(error.getCause());
             }
+        }*/
+
+        try {
+            GoogleSignInAccount acct = result.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+             NetworklUser user = NetworklUser.newBuilder()
+                    .userId(acct.getId())
+                  //  .accessToken(acct.getIdToken())
+                    .profilePictureUrl(acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "")
+                    .email(acct.getEmail())
+                    .fullName(acct.getDisplayName())
+                    .tokenId(acct.getIdToken())
+                     .serverAuthCode(acct.getServerAuthCode())
+                    .build();
+            handleSuccess(user);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+          /*  Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);*/
         }
     }
 
@@ -167,7 +199,7 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
         return scopes;
     }
 
-    private void handleDisconnectRequest(final Runnable onSignOut) {
+  /*  private void handleDisconnectRequest(final Runnable onSignOut) {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(status -> {
             onSignOut.run();
             Authentication.getInstance().setGoogleDisconnectRequested(false);
@@ -179,11 +211,15 @@ public class GoogleAuthActivity extends AuthenticationActivity implements Google
             onRevoke.run();
             Authentication.getInstance().setGoogleRevokeRequested(false);
         });
-    }
+    }*/
 
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        /*Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);*/
+
+        Intent signInIntent = googleApiClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
     private void setupScopes(GoogleSignInOptions.Builder builder) {

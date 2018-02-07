@@ -33,12 +33,10 @@ public class FacebookAuthActivity extends AuthenticationActivity
     private static final List<String> DEFAULT_SCOPES = Arrays.asList("email", "public_profile");
     private CallbackManager callbackManager;
 
-
-    // TODO: 2/6/18 change start to getIntent
-    public static void start(Context context) {
+    public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, FacebookAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        return intent;
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +55,6 @@ public class FacebookAuthActivity extends AuthenticationActivity
     }
 
     @Override public void onSuccess(LoginResult loginResult) {
-
-
         showDialog();
         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), this);
         Bundle parameters = new Bundle();
@@ -68,7 +64,6 @@ public class FacebookAuthActivity extends AuthenticationActivity
     }
 
     @Override public void onCancel() {
-      //  Authentication.getInstance().onLoginCancel();
         handCancel();
     }
 
@@ -77,7 +72,6 @@ public class FacebookAuthActivity extends AuthenticationActivity
         if (error instanceof FacebookAuthorizationException) {
             LoginManager.getInstance().logOut();
         }
-       //Authentication.getInstance().onLoginError(error.getCause());
     }
 
     @Override public void onCompleted(JSONObject object, GraphResponse response) {
@@ -92,11 +86,9 @@ public class FacebookAuthActivity extends AuthenticationActivity
                     .build();
 
             dismissProgress();
-           // Authentication.getInstance().onLoginSuccess(user);
-           handleSuccess(user);
+            handleSuccess(user);
         } catch (JSONException e) {
             dismissProgress();
-          //  Authentication.getInstance().onLoginError(e.getCause());
             handleError(e);
         }
     }

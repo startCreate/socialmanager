@@ -39,12 +39,11 @@ public class InstagramAuthActivity extends AuthenticationActivity {
     private String clientSecret;
     private String redirectUri;
 
-    public static void start(Context context) {
+    public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, InstagramAuthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        return intent;
     }
-
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +128,6 @@ public class InstagramAuthActivity extends AuthenticationActivity {
             @Override public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     runOnUiThread(() -> {
-//                        Authentication.getInstance().onLoginError(new RuntimeException("Failed to get access token."));
                         dismissProgress();
                         handleError(new Throwable("Failed to get access token."));
                     });
@@ -150,7 +148,6 @@ public class InstagramAuthActivity extends AuthenticationActivity {
 
                 runOnUiThread(() -> {
                     dismissProgress();
-//                    Authentication.getInstance().onLoginSuccess(user);
                     handleSuccess(user);
                 });
             }

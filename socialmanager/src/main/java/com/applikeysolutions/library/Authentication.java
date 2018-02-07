@@ -40,11 +40,11 @@ public class Authentication {
     @SuppressLint("StaticFieldLeak")
     private static Authentication instance;
     private Context appContext;
+    private PublishSubject<NetworklUser> emitter;
     private List<String> facebookScopes = new ArrayList<>();
     private List<String> googleScopes = new ArrayList<>();
     private List<String> twitterScopes = new ArrayList<>();
     private List<String> instagramScopes = new ArrayList<>();
-    private PublishSubject<NetworklUser> userEmitter;
     private Network network;
 
     private Authentication() {
@@ -69,55 +69,41 @@ public class Authentication {
     }
 
     public Observable<NetworklUser> login() {
-        userEmitter = PublishSubject.create();
-        /*appContext.startActivity(*/getIntent()/*)*/;
-        return userEmitter;
+        emitter = PublishSubject.create();
+        networkChooser();
+        return emitter;
     }
 
-
-    public void onLoginSuccess(NetworklUser socialUser) {
-        if (userEmitter != null) {
-         //   NetworklUser copy = new NetworklUser(socialUser);
-            userEmitter.onNext(socialUser);
-            userEmitter.onComplete();
+    public void onLoginSuccess(NetworklUser user) {
+        if (emitter != null) {
+            //   NetworklUser copy = new NetworklUser(socialUser);
+            emitter.onNext(user);
+            emitter.onComplete();
         }
     }
 
     public void onLoginError(Throwable throwable) {
-        if (userEmitter != null) {
+        if (emitter != null) {
             Throwable copy = new Throwable(throwable);
-            userEmitter.onError(copy);
+            emitter.onError(copy);
         }
     }
 
     public void onLoginCancel() {
-        if (userEmitter != null) {
-            userEmitter.onComplete();
+        if (emitter != null) {
+            emitter.onComplete();
         }
     }
 
-    public void getIntent() {
+    public void networkChooser() {
         if (network == FACEBOOK) {
-            FacebookAuthActivity.start(appContext);
-           /* Intent intent = new Intent(appContext, FbLoginHiddenActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return intent;*/
+            appContext.startActivity(FacebookAuthActivity.getIntent(appContext));
         } else if (network == GOOGLE) {
-            GoogleAuthActivity.start(appContext);
-           /* Intent intent = new Intent(appContext, GoogleLoginHiddenActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, igClientId);
-            return intent;*/
+            appContext.startActivity(GoogleAuthActivity.getIntent(appContext));
         } else if (network == INSTAGRAM) {
-            InstagramAuthActivity.start(appContext);
-            /*Intent intent = new Intent(appContext, IgLoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(IgLoginActivity.EXTRA_CLIENT_ID, igClientId);
-            intent.putExtra(IgLoginActivity.EXTRA_CLIENT_SECRET, igCleintSecret);
-            intent.putExtra(IgLoginActivity.EXTRA_REDIRECT_URL, igRedirectUrl);
-            return intent;*/
-        }else if (network == TWITTER){
-            TwitterAuthActivity.start(appContext);
+            appContext.startActivity(InstagramAuthActivity.getIntent(appContext));
+        } else if (network == TWITTER) {
+            appContext.startActivity(TwitterAuthActivity.getIntent(appContext));
         } else {
             throw new RuntimeException("No such network");
         }
@@ -125,11 +111,9 @@ public class Authentication {
 
     public Authentication connectFacebook(@Nullable List<String> scopes) {
         facebookScopes = scopes;
-      //  FacebookAuthActivity.start(appContext);
-       network = FACEBOOK;
-       //this.scopes = scopes;
+        network = FACEBOOK;
 
-       return this;
+        return this;
     }
 
     public void disconnectFacebook() {
@@ -141,7 +125,6 @@ public class Authentication {
         googleScopes = scopes;
         network = GOOGLE;
         return this;
-        //GoogleAuthActivity.start(appContext);
     }
 
     public void disconnectGoogle() {
@@ -156,7 +139,6 @@ public class Authentication {
 
     public Authentication connectTwitter() {
         twitterScopes = Collections.<String>emptyList();
-     //   TwitterAuthActivity.start(appContext);
         network = TWITTER;
         return this;
     }
@@ -169,7 +151,6 @@ public class Authentication {
 
     public Authentication connectInstagram(@Nullable List<String> scopes) {
         instagramScopes = scopes;
-       // InstagramAuthActivity.start(appContext);
         network = INSTAGRAM;
         return this;
     }
@@ -215,7 +196,6 @@ public class Authentication {
         String fbAppId = Utils.getMetaDataValue(appContext, appContext.getString(R.string.vv_com_applikeysolutions_socialmanager_facebookAppId));
         if (!TextUtils.isEmpty(fbAppId)) {
             FacebookSdk.setApplicationId(fbAppId);
-            FacebookSdk.sdkInitialize(appContext);
         }
     }
 

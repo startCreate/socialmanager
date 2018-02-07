@@ -17,21 +17,20 @@ public abstract class AuthenticationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    protected abstract List<String> getAuthScopes();
+
     protected void handCancel() {
         Authentication.getInstance().onLoginCancel();
-     //   getScopes().getCallback().onCancel();
         finish();
     }
 
     protected void handleError(Throwable error) {
-Authentication.getInstance().onLoginError(error);
-//        getScopes().getCallback().onError(error);
+        Authentication.getInstance().onLoginError(error);
         finish();
     }
 
     protected void handleSuccess(NetworklUser user) {
         Authentication.getInstance().onLoginSuccess(user);
-//        getScopes().getCallback().onSuccess(user);
         finish();
     }
 
@@ -49,6 +48,4 @@ Authentication.getInstance().onLoginError(error);
             dialog.dismiss();
         }
     }
-
-    protected abstract List<String> getAuthScopes();
 }
