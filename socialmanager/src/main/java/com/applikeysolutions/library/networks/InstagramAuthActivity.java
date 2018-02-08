@@ -171,5 +171,4 @@ public class InstagramAuthActivity extends AuthenticationActivity {
             String profilePicture;
         }
     }
-
 }

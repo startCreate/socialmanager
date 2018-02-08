@@ -34,9 +34,6 @@ import static com.twitter.sdk.android.core.TwitterConfig.Builder;
 
 public class Authentication {
 
-    private static final String KEY_IS_GOOGLE_DISCONNECT_REQUESTED = Authentication.class.getName() + "KEY_IS_GOOGLE_DISCONNECT_REQUESTED";
-    private static final String KEY_IS_GOOGLE_REVOKE_REQUESTED = Authentication.class.getName() + "KEY_IS_GOOGLE_REVOKE_REQUESTED";
-
     @SuppressLint("StaticFieldLeak")
     private static Authentication instance;
     private Context appContext;
@@ -76,7 +73,6 @@ public class Authentication {
 
     public void onLoginSuccess(NetworklUser user) {
         if (emitter != null) {
-            //   NetworklUser copy = new NetworklUser(socialUser);
             emitter.onNext(user);
             emitter.onComplete();
         }
@@ -129,12 +125,7 @@ public class Authentication {
 
     public void disconnectGoogle() {
         googleScopes = null;
-        setGoogleDisconnectRequested(true);
-    }
-
-    public void revokeGoogle() {
-        googleScopes = null;
-        setGoogleRevokeRequested(true);
+        clearCookies();
     }
 
     public Authentication connectTwitter() {
@@ -174,22 +165,6 @@ public class Authentication {
 
     public List<String> getInstagramScopes() {
         return instagramScopes;
-    }
-
-    public boolean isGoogleDisconnectRequested() {
-        return Utils.getBoolean(appContext, KEY_IS_GOOGLE_DISCONNECT_REQUESTED);
-    }
-
-    public void setGoogleDisconnectRequested(boolean isRequested) {
-        Utils.saveBoolean(appContext, KEY_IS_GOOGLE_DISCONNECT_REQUESTED, isRequested);
-    }
-
-    public boolean isGoogleRevokeRequested() {
-        return Utils.getBoolean(appContext, KEY_IS_GOOGLE_REVOKE_REQUESTED);
-    }
-
-    public void setGoogleRevokeRequested(boolean isRequested) {
-        Utils.saveBoolean(appContext, KEY_IS_GOOGLE_REVOKE_REQUESTED, isRequested);
     }
 
     private void initFacebook(Context appContext) {

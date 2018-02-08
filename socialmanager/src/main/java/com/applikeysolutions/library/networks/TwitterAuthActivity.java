@@ -63,7 +63,6 @@ public class TwitterAuthActivity extends AuthenticationActivity {
             handleCancel();
             return;
         }
-
         if (requestCode == getTwitterAuthClient().getRequestCode()) {
             getTwitterAuthClient().onActivityResult(requestCode, resultCode, data);
         }
@@ -91,7 +90,6 @@ public class TwitterAuthActivity extends AuthenticationActivity {
 
     private void handleSuccess(final TwitterSession session) {
         showDialog();
-
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         AccountService accountService = twitterApiClient.getAccountService();
 
@@ -111,7 +109,6 @@ public class TwitterAuthActivity extends AuthenticationActivity {
                         .build();
 
                 handleSuccess(user);
-
             }
 
             public void failure(TwitterException error) {
@@ -120,5 +117,4 @@ public class TwitterAuthActivity extends AuthenticationActivity {
             }
         });
     }
-
 }
